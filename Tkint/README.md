@@ -12,6 +12,7 @@
 * Uses dictionaries stored as JSON to reply during conversations.
 * Character mimic is pending
 * Chatbot efficiency is low but grows with use.
+* Utilities file contains independent functions
 
 ###### Functions written here are used in main thread.
 
