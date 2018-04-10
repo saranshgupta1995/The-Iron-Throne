@@ -1,0 +1,17 @@
+{
+    "duck, find me this": ["duck, find me this", "send the duck", "go duck go","duck, search me this"],
+    "goo, find me this": ["goo, find me this","goo, search me this"],
+    "listen to the king": ["listen to the king"],
+    "raise": ["raise", "kill and raise"],
+    "how are you doing?": ["how are you doing?", "how you doing?", "how are things with you?", "how is life?", "how is the kingdom treating you?", "how are you holding up?", "how are you these days?", "how is the universe treating you?", "is everything fine with you?", "how are you?", "how is my favourite imp?", "how is my imp?", "how fares my imp?", "how's my imp?", "how's my favourite imp?", "how's my hand?", "how is my hand", "how are you today?", "how fares my favourite imp?"],
+    "ptm": ["ptm"],
+    "open this": ["open this"],
+    "duck, work secretly": ["duck, work secretly"],
+    "calculate exp": ["calculate exp", "solve this"],
+    "get me this song": ["get me this song"],
+    "ax": ["ax"],
+    "get me these lyrics": ["get me these lyrics"],
+    "open file or dir": ["open file or dir"],
+    "goo, work secretly": ["goo, work secretly"],
+    "csh": ["csh"]
+}
