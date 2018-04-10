@@ -1,7 +1,7 @@
 import Tkinter as Tk
 import nltk, time, os
 from random import choice
-import itertools
+from Utilities import *
 
 """
 CC: Coordinating Cunjunction
@@ -36,6 +36,7 @@ class Face:
         self.__textBox.pack()
         self.__buttons=[]
         self.__cmd=""
+        print ('Face loaded')
 
 ##        lbl=Tk.Label(window,text="Label 1")
 ##        lbl.pack()
@@ -58,30 +59,9 @@ class Face:
             self.removeUI()
         if(self.cmdDet):
             print ('sending input')
-            self.send_input(self.__cmd[1:-1].lower())
+            send_input(self.__cmd[1:-1].lower())
             self.cmdDet=False
         return self.__cmd[1:-1].lower()
-
-    def send_input(self,txt):
-        with open('Citidel//Temp.txt','w') as f:
-            f.write(txt)
-
-    def breakdown(sen):
-        lst=sen.split()
-        combinatorics = itertools.product([True, False], repeat=len(lst) - 1)
-        solution = []
-        for combination in combinatorics:
-            i = 0
-            one_such_combination = [lst[i]]
-            for slab in combination:
-                i += 1
-                if not slab:
-                    one_such_combination[-1] += ' '+lst[i]
-                else:
-                    one_such_combination += [lst[i]]
-            solution.append(one_such_combination)
-
-        return solution[::-1]
 
     def add_label(self,txt):
         self.__labels+=[Tk.Label(self.__window,text=txt)]
@@ -95,25 +75,13 @@ class Face:
     def removeUI(self):
         self.__window.destroy()
 
-    def get_all_tags(self,text):
-        text = nltk.word_tokenize(text)
-        return nltk.pos_tag(text)
-
-    def find_meaning(self,in_sen):
-        for key in self.__citidel.convs_in:
-            for value in self.__citidel.convs_in[key]:
-                if value==in_sen:
-                    return key
-        return ''
-
     def fetch_response(self,gist):
         reply=choice(self.__citidel.convs_out[gist])
         return reply
 
     def find_response(self,in_sen):
-        meaning=None
         means=[]
-        meaning=self.find_meaning(in_sen)
+        meaning=find_meaning_in(in_sen,self.__citidel.convs_in)
         if(meaning):
             return self.fetch_response(meaning)
         means+=[in_sen]
@@ -122,7 +90,7 @@ class Face:
             in_sen=self.take_Input()
             if(in_sen in ('nothing','ignore')):
                 return 'As your Grace commands.'
-            meaning=self.find_meaning(in_sen)
+            meaning=find_meaning_in(in_sen,self.__citidel.convs_in)
             if(meaning):
                 self.__citidel.convs_in[meaning]+=means
                 self.__citidel.close_convs()
@@ -143,5 +111,3 @@ if __name__=="__main__":
         print(str(res))
         d.respond_with(str(res))
     d.removeUI()
-
-print ('Face loaded')
