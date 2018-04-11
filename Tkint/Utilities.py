@@ -26,8 +26,16 @@ def get_all_tags(self,text):
     return nltk.pos_tag(text)
 
 
-def find_meaning_in(in_sen,data_dict):
-    combs=breakdown(in_sen)
-    gist= ([comb for comb in combs if all(part in [j for i in data_dict.values() for j in i] for part in comb)]+[' x x Placeholder x x '])[0]
-    gist= [key for part in gist for key in data_dict.keys() if part in data_dict[key]]
-    return ['',' '.join(gist)][len(gist)]
+def find_meaning_in(in_sen,data_dict_top,data_dict_deep):
+    for data_dict in (data_dict_top,data_dict_deep):
+        combs=breakdown(in_sen)
+        gist= ([comb for comb in combs if all(part in [j for i in data_dict.values() for j in i] for part in comb)]+[' x x Placeholder x x '])[0]
+        gist= [key for part in gist for key in data_dict.keys() if part in data_dict[key]]
+        if(len(gist)):
+            in_sen=' '.join(gist)
+            print in_sen
+            for key in data_dict_top:
+                for value in data_dict_top[key]:
+                    if value==in_sen:
+                        return key
+    return ''

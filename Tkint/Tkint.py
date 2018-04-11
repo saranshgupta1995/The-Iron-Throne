@@ -81,7 +81,7 @@ class Face:
 
     def find_response(self,in_sen):
         means=[]
-        meaning=find_meaning_in(in_sen,self.__citidel.convs_in)
+        meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
         if(meaning):
             return self.fetch_response(meaning)
         means+=[in_sen]
@@ -90,7 +90,7 @@ class Face:
             in_sen=self.take_Input()
             if(in_sen in ('nothing','ignore')):
                 return 'As your Grace commands.'
-            meaning=find_meaning_in(in_sen,self.__citidel.convs_in)
+            meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
             if(meaning):
                 self.__citidel.convs_in[meaning]+=means
                 self.__citidel.close_convs()
