@@ -17,6 +17,8 @@ class Citidel:
     def __init__(self):
         self.consts = json.loads(open('Citidel//consts.txt').read())
         self.cmds = json.loads(open('Citidel//cmds.txt').read())
+        self.stop_words=json.loads(open('Citidel//conversations_filter.json').read())['stop words']
+        self.convs_deep=json.loads(open('Citidel//conversations_deep.json').read())
         self.__pressed_s_c=[0,0]
         self.__pressed_a_t=[0,0]
         self.useGamepad=True
@@ -35,11 +37,11 @@ class Citidel:
         return t
 
     def open_convs(self,character='tyrion',mode='in'):
-        self.convs_in=json.loads(open('Citidel//'+character+'_conversations_in'+'.json').read())
+        self.convs_in=json.loads(open('Citidel//conversations_in.json').read())
         self.convs_out=json.loads(open('Citidel//'+character+'_conversations_out'+'.json').read())
 
     def close_convs(self,character='tyrion',mode='in'):
-        with open('Citidel//'+character+'_conversations_'+mode+'.json', 'w') as fp:
+        with open('Citidel//conversations_'+mode+'.json', 'w') as fp:
             json.dump(self.convs_in, fp)
 
     def add_convs(self, for_data, value):
