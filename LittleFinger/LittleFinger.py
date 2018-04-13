@@ -86,7 +86,7 @@ class LittleFinger:
                     am,src,trgt=line[1:].split()
                     self.do_transfer(am,src,trgt)
                     continue
-                left_over+=line+'\n'
+                left_over+=line
             with open(r'C:\Users\Saransh\Dropbox\Temps\Expenses.txt', 'w') as fp:
                 fp.write(left_over)
 
