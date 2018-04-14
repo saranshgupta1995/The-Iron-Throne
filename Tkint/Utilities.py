@@ -1,7 +1,9 @@
-import itertools
+import itertools, re
 
 def breakdown(sen):
     lst=sen.split()
+    if(not len(lst)):
+        return []
     combinatorics = itertools.product([True, False], repeat=len(lst) - 1)
     solution = []
     for combination in combinatorics:
@@ -29,13 +31,40 @@ def get_all_tags(self,text):
 def find_meaning_in(in_sen,data_dict_top,data_dict_deep):
     for data_dict in (data_dict_top,data_dict_deep):
         combs=breakdown(in_sen)
-        gist= ([comb for comb in combs if all(part in [j for i in data_dict.values() for j in i] for part in comb)]+[' x x Placeholder x x '])[0]
-        gist= [key for part in gist for key in data_dict.keys() if part in data_dict[key]]
-        if(len(gist)):
-            in_sen=' '.join(gist)
-            print in_sen
+        matches= ([comb for comb in combs if all(part in [j for i in data_dict.values() for j in i] for part in comb)])
+        gists= [[key for part in x for key in data_dict.keys() if part in data_dict[key]] for x in matches]
+        data={}
+        for match in matches:
+            for part in match:
+                for key in data_dict.keys():
+                    if part in data_dict[key]:
+                        if(key not in data.get(part,[])):
+                            data[part]=data.get(part,[])+[key]
+        print 'word map',data
+        if(len(data)):
+            d=[]
+            for match in matches:
+                s=[]
+                for part in match:
+                    s2=[]
+                    for similar in data[part]:
+                        if(len(s)):
+                            s2+=[x+[similar] for x in s]
+                        else:
+                            s2+=[[similar]]
+                    s=s2
+                d+=[' '.join(x) for x in s]
+            found =list(set(d))
+            print found
+                
             for key in data_dict_top:
                 for value in data_dict_top[key]:
-                    if value==in_sen:
+                    if found.count(value)>0:
                         return key
     return ''
+
+def strip_search(txt,stop_words=[]):
+    txt = re.sub('[!?,.]', '', txt)
+    txt=' '.join([wrd for wrd in txt.split() if wrd not in stop_words])
+    return txt
+

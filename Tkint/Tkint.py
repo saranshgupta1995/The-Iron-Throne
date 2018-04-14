@@ -55,13 +55,15 @@ class Face:
             self.__window.update_idletasks()
             self.__window.update()
         self.respond_with(self.__cmd[1:-1])
-        if(self.__cmd[1:-1] in ('quit','exit')):
+        in_sen=strip_search(self.__cmd[1:-1])
+        if(in_sen in ('quit','exit')):
             self.removeUI()
         if(self.cmdDet):
             print ('sending input')
-            send_input(self.__cmd[1:-1].lower())
+            send_input(in_sen.lower())
             self.cmdDet=False
-        return self.__cmd[1:-1].lower()
+            return "IS_CMD"
+        return in_sen.lower()
 
     def add_label(self,txt):
         self.__labels+=[Tk.Label(self.__window,text=txt)]
@@ -82,6 +84,8 @@ class Face:
     def find_response(self,in_sen):
         means=[]
         meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
+        if(not len(meaning)):
+            meaning=find_meaning_in(strip_search(in_sen,self.__citidel.stop_words),self.__citidel.convs_in,self.__citidel.convs_deep)            
         if(meaning):
             return self.fetch_response(meaning)
         means+=[in_sen]
@@ -91,6 +95,8 @@ class Face:
             if(in_sen in ('nothing','ignore')):
                 return 'As your Grace commands.'
             meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
+            if(not len(meaning)):
+                meaning=find_meaning_in(strip_search(in_sen,self.__citidel.stop_words),self.__citidel.convs_in,self.__citidel.convs_deep)
             if(meaning):
                 self.__citidel.convs_in[meaning]+=means
                 self.__citidel.close_convs()
