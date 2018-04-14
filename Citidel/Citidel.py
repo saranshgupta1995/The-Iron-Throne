@@ -97,10 +97,9 @@ class Citidel:
             if(not self.__pressed_s_c[0]):
                 pyautogui.keyDown('shiftleft')
                 self.__pressed_s_c[0]=1
-            else:
-                pyautogui.keyUp('shiftleft')
-                self.__pressed_s_c[0]=0
-            self.key_debounce(10)
+        elif(self.__pressed_s_c[0]):
+            pyautogui.keyUp('shiftleft')
+            self.__pressed_s_c[0]=0
         if(out[9]):
             pyautogui.press('tab')
             self.key_debounce(6.5)
@@ -108,19 +107,18 @@ class Citidel:
             if(not self.__pressed_s_c[1]):
                 pyautogui.keyDown('ctrlleft')
                 self.__pressed_s_c[1]=1
-            else:
-                pyautogui.keyUp('ctrlleft')
-                self.__pressed_s_c[1]=0
-            self.key_debounce(10)
+        elif(self.__pressed_s_c[1]):
+            pyautogui.keyUp('ctrlleft')
+            self.__pressed_s_c[1]=0
+            
         if(out[11]):
             if(not self.__pressed_a_t[1]):
                 pyautogui.keyDown('alt')
-                self.__pressed_a_t[1]=1
-            else:
-                pyautogui.keyUp('alt')
-                self.__pressed_a_t[1]=0
-            self.key_debounce(10)
-
+                self.__pressed_a_t[1]=1    
+        elif(self.__pressed_a_t[1]):
+            pyautogui.keyUp('alt')
+            self.__pressed_a_t[1]=0
+            
         if(out[12]):
             pyautogui.press('backspace')
             self.key_debounce(6.5)
