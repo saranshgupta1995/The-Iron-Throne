@@ -32,7 +32,7 @@ class Mel:
 
     def get_info_on(self,se='https://duckduckgo.com/?q=',query='pikachu',incog=False,goo=False):
         if(goo):
-            se='https://google.co.in/search/?q='
+            query='%21g '+query
         query=query.replace(' ','+')
         query=se+query
         app = pywinauto.Application(backend='uia')
