@@ -1,19 +1,35 @@
+from time import time
 #Imports
 #Team modules
 
+a=time()
 from Citidel import Citidel
 citidel=Citidel.Citidel()
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nCitidel time log- '+str(time()-a))
+a=time()
 from Mel import Mel
 mel=Mel.Mel()
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nMel time log- '+str(time()-a))
+a=time()
 from Davos import Davos
 davos=Davos.Davos(citidel)
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nDavos time log- '+str(time()-a))
+a=time()
 from Tkint import Tkint
 from Tkint.Utilities import send_input
 face=Tkint.Face(citidel)
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nTkint time log- '+str(time()-a))
+a=time()
 from LittleFinger import LittleFinger
 lf=LittleFinger.LittleFinger(citidel)
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nLF time log- '+str(time()-a)+'\n')
 
-import time, os, threading
+import os, threading
 from difflib import SequenceMatcher
 import pyperclip
 
@@ -129,6 +145,8 @@ def show_ui():
         in_sen=face.take_Input()
         if(in_sen[0] in ('+','-','$')):
             send_input(in_sen)
+            continue
+        if(in_sen=="IS_CMD"):
             continue
         res=face.find_response(in_sen)
         print('response',res)
