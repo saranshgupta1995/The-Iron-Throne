@@ -48,13 +48,14 @@ class Face:
 ##        btn.pack()
 
     def take_Input(self):
+        self.__textBox.focus()
         self.__cmd=">"
         self.__textBox.delete(0,'end')
         while self.__cmd[-1]!="<":
             self.__cmd=">"+self.__textBox.get()
             self.__window.update_idletasks()
             self.__window.update()
-        self.respond_with(self.__cmd[1:-1])
+        self.respond_with(self.__cmd[1:-1],'e')
         in_sen=strip_search(self.__cmd[1:-1])
         if(in_sen in ('quit','exit')):
             self.removeUI()
@@ -66,13 +67,17 @@ class Face:
         return in_sen.lower()
 
     def add_label(self,txt):
-        self.__labels+=[Tk.Label(self.__window,text=txt)]
+        self.__labels+=[Tk.Label(self.__window,text=txt,width=36,wraplength=250)]
         self.__labels[len(self.__labels)-1].pack()
 
-    def respond_with(self, txt=""):
+    def respond_with(self, txt="", anc='w'):
         for i in range(len(self.__labels)-1):
             self.__labels[i]['text']=self.__labels[i+1]['text']
+            self.__labels[i]['anchor']=self.__labels[i+1]['anchor']
+            self.__labels[i]['justify']=self.__labels[i+1]['justify']
         self.__labels[len(self.__labels)-1]['text']=txt
+        self.__labels[len(self.__labels)-1]['anchor']=anc
+        self.__labels[len(self.__labels)-1]['justify']=['left','right'][anc=='e']
 
     def removeUI(self):
         self.__window.destroy()
