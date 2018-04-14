@@ -15,20 +15,30 @@ pyautogui.PAUSE = 0
 class Citidel:
 
     def __init__(self):
-        self.consts = json.loads(open('Citidel//consts.txt').read())
-        self.cmds = json.loads(open('Citidel//cmds.txt').read())
-        self.stop_words=json.loads(open('Citidel//conversations_filter.json').read())['stop words']
-        self.convs_deep=json.loads(open('Citidel//conversations_deep.json').read())
         self.__pressed_s_c=[0,0]
         self.__pressed_a_t=[0,0]
+        self.get_joystick()
+        self.loadData()
+
+    def get_joystick(self):
         self.useGamepad=True
-        self.open_convs()
         pygame.init()
         try:
             self.__j = pygame.joystick.Joystick(0)
             self.__j.init()
         except:
+            self.__j=None
             self.useGamepad=False
+
+    def loadData(self):
+        a=time.time()
+        self.consts = json.loads(open('Citidel//consts.txt').read())
+        self.cmds = json.loads(open('Citidel//cmds.txt').read())
+        self.stop_words=json.loads(open('Citidel//conversations_filter.json').read())['stop words']
+        self.convs_deep=json.loads(open('Citidel//conversations_deep.json').read())
+        self.open_convs()
+        with open('Logger//Time_log.txt', 'a') as fp:
+            fp.write('\nCitidel Data Time Log-'+str(time.time()-a))
 
     def getCmd(self):
         f=open((os.path.join(os.getcwd(),'Citidel','Temp.txt')),"r")

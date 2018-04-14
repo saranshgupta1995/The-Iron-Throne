@@ -55,7 +55,8 @@ def kill_and_raise(mod=None):
     if(mod=='lf'):
         reload(LittleFinger)
         lf=LittleFinger.LittleFinger()
-
+    if(mod=='citidel'):
+        citidel.loadData()
 if(useVarys):
     def readCmd():
         return citidel.getCmd()
