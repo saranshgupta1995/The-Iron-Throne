@@ -1,37 +1,87 @@
 from time import time
+import threading
 #Imports
 #Team modules
 
-a=time()
-from Citidel import Citidel
-citidel=Citidel.Citidel()
-with open('Logger//Time_log.txt','a') as f:
-    f.write('\nCitidel time log- '+str(time()-a))
-a=time()
-from Mel import Mel
-mel=Mel.Mel()
-with open('Logger//Time_log.txt','a') as f:
-    f.write('\nMel time log- '+str(time()-a))
-a=time()
-from Davos import Davos
-davos=Davos.Davos(citidel)
-with open('Logger//Time_log.txt','a') as f:
-    f.write('\nDavos time log- '+str(time()-a))
-a=time()
-from Tkint import Tkint
-from Tkint.Utilities import send_input
-face=Tkint.Face(citidel)
-with open('Logger//Time_log.txt','a') as f:
-    f.write('\nTkint time log- '+str(time()-a))
-a=time()
-from LittleFinger import LittleFinger
-lf=LittleFinger.LittleFinger(citidel)
-with open('Logger//Time_log.txt','a') as f:
-    f.write('\nLF time log- '+str(time()-a)+'\n')
+start_time=time()
 
-import os, threading
+wait_Tkint=0
+def get_Tkint():
+    a=time()
+    global wait_Tkint
+    from Tkint import Tkint
+    wait_Tkint=Tkint
+    with open('Logger//Time_log.txt','a') as f:
+        f.write('\nTkint time log- '+str(time()-a))
+getting_Tkint=threading.Thread(target=get_Tkint)
+getting_Tkint.start()
+wait_Citidel=0
+def get_Citidel():
+    a=time()
+    global wait_Citidel
+    from Citidel import Citidel
+    wait_Citidel=Citidel
+    with open('Logger//Time_log.txt','a') as f:
+        f.write('\nCitidel time log- '+str(time()-a))
+getting_Citidel=threading.Thread(target=get_Citidel)
+getting_Citidel.start()
+wait_Davos=0
+def get_Davos():
+    a=time()
+    global wait_Davos
+    from Davos import Davos
+    wait_Davos=Davos
+    with open('Logger//Time_log.txt','a') as f:
+        f.write('\nDavos time log- '+str(time()-a))
+getting_Davos=threading.Thread(target=get_Davos)
+getting_Davos.start()
+wait_Mel=0
+def get_Mel():
+    a=time()
+    global wait_Mel
+    from Mel import Mel
+    wait_Mel=Mel
+    with open('Logger//Time_log.txt','a') as f:
+        f.write('\nMel time log- '+str(time()-a))
+getting_Mel=threading.Thread(target=get_Mel)
+getting_Mel.start()
+wait_LF=0
+def get_LF():
+    a=time()
+    global wait_LF
+    from LittleFinger import LittleFinger
+    wait_LF=LittleFinger
+    with open('Logger//Time_log.txt','a') as f:
+        f.write('\nLittleFinger time log- '+str(time()-a))
+getting_LF=threading.Thread(target=get_LF)
+getting_LF.start()
+
+getting_Citidel.join()
+Citidel=wait_Citidel
+citidel=Citidel.Citidel()
+getting_Mel.join()
+Mel=wait_Mel
+mel=Mel.Mel()
+getting_Tkint.join()
+Tkint=wait_Tkint
+face=Tkint.Face(citidel)
+getting_Davos.join()
+Davos=wait_Davos
+davos=Davos.Davos(citidel)
+getting_LF.join()
+LittleFinger=wait_LF
+lf=LittleFinger.LittleFinger(citidel)
+
+
+import os
 from difflib import SequenceMatcher
 import pyperclip
+
+from Tkint.Utilities import send_input
+
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nTotal time log- '+str(time()-start_time)+'\n\n\n')
+
 
 print('imported everything')
 
@@ -54,7 +104,7 @@ def kill_and_raise(mod=None):
         mel=Mel.Mel()
     if(mod=='lf'):
         reload(LittleFinger)
-        lf=LittleFinger.LittleFinger()
+        lf=LittleFinger.LittleFinger(citidel)
     if(mod=='citidel'):
         citidel.loadData()
 if(useVarys):

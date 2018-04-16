@@ -9,6 +9,9 @@ pyautogui.PAUSE = 0
 
 class Mel:
 
+    def __init__(self):
+        print ('Mel reloaded')
+
     def getYoutubeBestSearch(self,song):
         urlopen = urllib2.urlopen  # open a url
         encode = urllib.urlencode  # encode a search line
@@ -30,7 +33,7 @@ class Mel:
             pyautogui.press('tab')
         pyautogui.keyUp('alt')
 
-    def get_info_on(self,se='https://duckduckgo.com/?q=',query='pikachu',incog=False,goo=False):
+    def get_info_on(self, se='https://duckduckgo.com/?q=', query='pikachu', incog=False,goo=False):
         if(goo):
             query='%21g '+query
         query=query.replace(' ','+')
@@ -52,5 +55,3 @@ class Mel:
 
 if(__name__=='__main__'):
     m=Mel()
-
-print ('Mel loaded')
