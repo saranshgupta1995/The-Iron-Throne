@@ -5,7 +5,7 @@ A Desktop Manager using Python
 
 * Chatbot UI for easy interaction with application
 * Hidden input logger to take specific commands even in the absence of UI
-* Ability to download mp3 from youtube by song name 
+* Ability to download mp3 from youtube by song name
 * Ability to download mp3 from youtube by song lyrics
 * Ability to provide inputs mouse and keyboard inputs via gamepad
 * Speech to text conversion
@@ -31,6 +31,7 @@ A Desktop Manager using Python
 * Clipboard function declaration
 * Custom AutoComplete
 * Custom Automated Download Functionality
+* Auto-Readme generator
 
 ### Check README in modules for implemented functionalities
 ##### A Game of thrones themed Desktop Manager Program in Python
