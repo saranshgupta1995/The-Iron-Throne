@@ -52,8 +52,15 @@ class LittleFinger:
         if(self.__insert_prefixed):
             self.add_log(sum(self.__prefixed_expenses.values())/(int(self.last_day_of_month().day))*(max(self.__day_diff,1))*(-1),'AX','prefixed expenses')
             self.__insert_prefixed=False
+        self.show_exp_in()
         print ('LittleFinger loaded')
 
+    def show_exp_in(self):
+        self.open_workbook()
+        total_cols=[self.__cash_amount_col,self.__bank_amount_col,self.__wallet_amount_col]
+        for col in total_cols:
+            self.__ws[col+'2']=self.get_total_in_col(col)
+        self.close_workbook()
 
     def set_month_limit(self):
         salary=self.__shelf[self.getDate()[1]].get('Income',0)
@@ -174,7 +181,7 @@ class LittleFinger:
         self.close_workbook()
 
     def insert_new_date(self):
-        data_cols=[self.__cash_amount_col,self.__bank_amount_col,self.__cash_amount_col]
+        data_cols=[self.__cash_amount_col,self.__bank_amount_col,self.__wallet_amount_col]
         row_num = self.__shelf[self.getDate()[1]].get('date_pointer',3)
         while(any([self.__ws[(x+str(row_num))].value for x in data_cols])):
             row_num+=1
@@ -185,14 +192,12 @@ class LittleFinger:
         self.__shelf[self.__current_date]['entry_count']=self.__shelf[self.__current_date].get('entry_count',0)
         self.__shelf[self.__current_date]['total_exp']=0
     def get_total_in_col(self,col):
-        self.open_workbook()
         pointer=self.__shelf[self.getDate()[1]]['date_pointer']
         till_yesterday= sum([int(self.__ws[col+str(row)].value) for row in range(3,pointer) if (self.__ws[col+str(row)]).value])
         todays=0
         while (self.__ws[col+str(pointer)].value):
             todays+=int(self.__ws[col+str(pointer)].value)
             pointer+=1
-        self.close_workbook()
         return till_yesterday+todays
 
     def do_transfer(self,amount,source,target):
