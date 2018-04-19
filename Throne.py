@@ -25,6 +25,16 @@ def get_Citidel():
         f.write('\nCitidel time log- '+str(time()-a))
 getting_Citidel=threading.Thread(target=get_Citidel)
 getting_Citidel.start()
+wait_Lang=0
+def get_Lang():
+    a=time()
+    global wait_Lang
+    from High_Valyrian import The_Language
+    wait_Lang=The_Language
+    with open('Logger//Time_log.txt','a') as f:
+        f.write('\nLanguage time log- '+str(time()-a))
+getting_Lang=threading.Thread(target=get_Lang)
+getting_Lang.start()
 wait_Davos=0
 def get_Davos():
     a=time()
@@ -62,6 +72,9 @@ citidel=Citidel.Citidel()
 getting_Mel.join()
 Mel=wait_Mel
 mel=Mel.Mel()
+getting_Lang.join()
+The_Language=wait_Lang
+language=The_Language.Valyrian()
 getting_Tkint.join()
 Tkint=wait_Tkint
 face=Tkint.Face(citidel)
@@ -174,6 +187,12 @@ if(useVarys):
             query=getCmdData(action)
             mel.get_info_on(query=query)
             return 1
+        if(areSimilar("get the meaning of",action)):
+            word=getCmdData(action)
+            print ('word lookup',word)
+            data=language.run_data_lookup(word)
+            face.respond_with(' '.join(data['meanings']))
+            return 1
         if(areSimilar("duck, work secretly",action)):
             query=getCmdData(action)
             mel.get_info_on(query=query,incog=True)
@@ -226,7 +245,10 @@ action_buff=fetchCmd()
 action=fetchCmd()
 while True:
     while(action==action_buff):
-        action=fetchCmd()
+        try:
+            action=fetchCmd()
+        except:
+            pass
     with open('Citidel//Temp.txt','r') as f:
         action=f.read()
     action_buff=action
