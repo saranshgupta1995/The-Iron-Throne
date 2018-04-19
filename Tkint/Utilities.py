@@ -40,7 +40,6 @@ def find_meaning_in(in_sen,data_dict_top,data_dict_deep):
                     if part in data_dict[key]:
                         if(key not in data.get(part,[])):
                             data[part]=data.get(part,[])+[key]
-        print 'word map',data
         if(len(data)):
             d=[]
             for match in matches:
@@ -55,8 +54,7 @@ def find_meaning_in(in_sen,data_dict_top,data_dict_deep):
                     s=s2
                 d+=[' '.join(x) for x in s]
             found =list(set(d))
-            print found
-                
+
             for key in data_dict_top:
                 for value in data_dict_top[key]:
                     if found.count(value)>0:
@@ -67,4 +65,3 @@ def strip_search(txt,stop_words=[]):
     txt = re.sub('[!?,.]', '', txt)
     txt=' '.join([wrd for wrd in txt.split() if wrd not in stop_words])
     return txt
-

@@ -29,11 +29,13 @@ class Face:
         self.__window=Tk.Tk()
         self.__window.title("The Iron Throne")
         self.__window.geometry("300x400")
+        Tk.Label(self.__window,text='',width=36,wraplength=250).pack()
+        self.__textBox=Tk.Entry(self.__window)
+        self.__textBox.pack()
+        Tk.Label(self.__window,text='',width=36,wraplength=250).pack()
         self.__labels=[]
         for i in range(15):
             self.add_label('')
-        self.__textBox=Tk.Entry(self.__window)
-        self.__textBox.pack()
         self.__buttons=[]
         self.__cmd=""
         print ('Face loaded')
@@ -61,7 +63,7 @@ class Face:
             self.removeUI()
         if(self.cmdDet):
             print ('sending input')
-            send_input(in_sen.lower())
+            send_input(in_sen)
             self.cmdDet=False
             return "IS_CMD"
         return in_sen.lower()
@@ -71,13 +73,14 @@ class Face:
         self.__labels[len(self.__labels)-1].pack()
 
     def respond_with(self, txt="", anc='w'):
-        for i in range(len(self.__labels)-1):
-            self.__labels[i]['text']=self.__labels[i+1]['text']
-            self.__labels[i]['anchor']=self.__labels[i+1]['anchor']
-            self.__labels[i]['justify']=self.__labels[i+1]['justify']
-        self.__labels[len(self.__labels)-1]['text']=txt
-        self.__labels[len(self.__labels)-1]['anchor']=anc
-        self.__labels[len(self.__labels)-1]['justify']=['left','right'][anc=='e']
+        for i in range(len(self.__labels)-1,0,-1 ):
+            self.__labels[i]['text']=self.__labels[i-1]['text']
+            self.__labels[i]['anchor']=self.__labels[i-1]['anchor']
+            self.__labels[i]['justify']=self.__labels[i-1]['justify']
+        self.__labels[0]['text']=txt
+        self.__labels[0]['anchor']=anc
+        self.__labels[0]['justify']=['left','right'][anc=='e']
+
 
     def removeUI(self):
         self.__window.destroy()
@@ -90,7 +93,7 @@ class Face:
         means=[]
         meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
         if(not len(meaning)):
-            meaning=find_meaning_in(strip_search(in_sen,self.__citidel.stop_words),self.__citidel.convs_in,self.__citidel.convs_deep)            
+            meaning=find_meaning_in(strip_search(in_sen,self.__citidel.stop_words),self.__citidel.convs_in,self.__citidel.convs_deep)
         if(meaning):
             return self.fetch_response(meaning)
         means+=[in_sen]
