@@ -1,11 +1,30 @@
-import requests
+import requests, shelve
 from bs4 import BeautifulSoup
+from Elements import *
+import shelve
 
 class Valyrian:
 
     def __init__(self):
+        shelf=shelve.open('Citidel//vocab',writeback=True)
+        self.__data=shelf.get('words',[])
+        self.__vocab=[x.word for x in self.__data]
+        shelf.close()
         print ('Language Found')
-        pass
+
+    def get_word(self, word):
+        word_data=self.run_data_lookup(word)
+        return Word(word,word_data)
+        
+
+    def add_literature(self,text):
+        data=strip_search(text,self.__data)
+        new_found=[self.get_word(word) if (word not in self.__vocab) else self.__data[self.__vocab.index(word)].occured() for word in data]
+        self.__data+=[x for x in new_found if x]
+        self.__vocab+=[x.word for x in new_found if x]
+        shelf=shelve.open('Citidel//vocab',writeback=True)
+        shelf['words']=self.__data
+        shelf.close()
 
     def make_word_data_url(self, query,mode):
         url='http://www.dictionary.com/browse/'
@@ -21,11 +40,11 @@ class Valyrian:
         soup = BeautifulSoup(r.content, 'html.parser')
 
         syn=soup.select("div.relevancy-list ul li a span")
-        syn=[str(x.text) for x in syn]
+        syn=[x.text.encode('utf-8') for x in syn]
 
         if(mode=='thes'):
             syn=soup.select("div.relevancy-list ul li a span")
-            syn=[str(x.text) for x in syn]
+            syn=[x.text.encode('utf-8') for x in syn]
 
             sents=(soup.select("div#example-sentences p"))
             sents=[sen for sen in sents]
@@ -34,7 +53,7 @@ class Valyrian:
             return syn, sents
         meaning_divs= soup.find_all('div', class_="def-content")
 
-        meanings=[str(x.text) for x in meaning_divs]
+        meanings=[x.text.encode('utf-8') for x in meaning_divs]
         meanings=[x.replace('\n','').replace('\r','').strip() for x in meanings]
 
         return meanings

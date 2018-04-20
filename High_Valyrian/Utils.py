@@ -1,4 +1,6 @@
-def strip_search(txt):
-    txt = re.sub('[!?,.]', '', txt)
-    txt=' '.join([wrd for wrd in txt.split() if len(wrd)>3])
-    return txt.lower()
+import re
+
+def strip_search(txt, data={}):
+    txt = re.sub('[!?,.]', '', txt.lower())
+    txt=[wrd for wrd in set(txt.split()) if (len(wrd)>3 and (wrd not in data))]
+    return txt

@@ -3,33 +3,23 @@ from Utils import *
 class Word:
 
     def __init__(self,word, word_data):
-         self.__word=word
-         self.__meanings=word_data.get('meanings',[])
-         self.__synonyms=word_data.get('synonyms',[])
-         self.__sentences=word_data.get('sentences',[])
-         self.__length=len(word)
-         self.__occurances=0
-         self.__complexity=100
+         self.word=word
+         self.meanings=word_data.get('meanings',[])
+         self.synonyms=word_data.get('synonyms',[])
+         self.sentences=word_data.get('sentences',[])
+         self.length=len(word)
+         self.__occurances=1
+
+    def occured(self):
+        self.__occurances+=1
 
     @property
-    def meanings(self):
-        return self.__meanings
+    def complexity(self):
+        return max((min((self.length*50 - self.__occurances),100),0))
 
     @property
-    def synonyms(self):
-        return self.__synonyms
-
-    @property
-    def sentences(self):
-        return self.__sentences
-
-    @property
-    def word(self):
-        return self.__word
-
-    @property
-    def length(self):
-        return self.__length
+    def needed_code(self):
+        return 1*(len(self.meanings)==0)+2*(len(self.synonyms)==0)+4*(len(self.sentences)==0)
 
     def __str__(self):
         return self.word
@@ -37,6 +27,11 @@ class Word:
 class Sentence:
 
     def __init__(self, sentence):
-        self.__sentence=sentence
+        self.sentence=sentence
         self.__stripped_sen=strip_search(sentence)
-        self.__words=[word for word in self.__stripped_sen]
+        self.__words=[Word(word) for word in self.__stripped_sen]
+        self.length=len(self.__words)
+
+    @property
+    def complexity(self):
+        return sum([(word.complexity/self.length) for word in self.__words])
