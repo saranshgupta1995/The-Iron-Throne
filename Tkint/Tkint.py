@@ -54,6 +54,9 @@ class Face:
         self.__cmd=">"
         self.__textBox.delete(0,'end')
         while self.__cmd[-1]!="<":
+            if(len(self.__citidel.info_data)):
+                self.respond_with(self.__citidel.info_data)
+                self.__citidel.info_data=''
             self.__cmd=">"+self.__textBox.get()
             self.__window.update_idletasks()
             self.__window.update()
@@ -69,7 +72,7 @@ class Face:
         return in_sen.lower()
 
     def add_label(self,txt):
-        self.__labels+=[Tk.Label(self.__window,text=txt,width=36,wraplength=250)]
+        self.__labels+=[Tk.Label(self.__window,text=txt,width=36,wraplength=250,font=("verdana", 9))]
         self.__labels[len(self.__labels)-1].pack()
 
     def respond_with(self, txt="", anc='w'):
@@ -113,7 +116,6 @@ class Face:
             means+=[in_sen]
             if(len(means)>5):
                 return 'I did not get you.'
-
 
 if __name__=="__main__":
     d=Face()
