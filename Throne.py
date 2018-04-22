@@ -115,6 +115,9 @@ def kill_and_raise(mod=None):
     if(mod=='mel'):
         reload(Mel)
         mel=Mel.Mel()
+    if(mod=='lang'):
+        reload(The_Language)
+        language=The_Language.Valyrian()
     if(mod=='lf'):
         reload(LittleFinger)
         lf=LittleFinger.LittleFinger(citidel)
@@ -143,7 +146,9 @@ if(useVarys):
         return cmd
 
     def execCmd(action):
+        print ('gonna exec', action)
         if(action=='raise'):
+            citidel.info_data='Who do you want to raise from the dead? ( Mel, Citidel, Davos, lf )'
             mod=getCmdData(action)
             kill_and_raise(mod)
             return 1
@@ -188,10 +193,12 @@ if(useVarys):
             mel.get_info_on(query=query)
             return 1
         if(areSimilar("get the meaning of",action)):
+            print 'enter word'
             word=getCmdData(action)
             print ('word lookup',word)
-            data=language.run_data_lookup(word)
-            face.respond_with(' '.join(data['meanings']))
+            word=language.get_word(word)
+            data=' '.join(word.meanings)
+            citidel.info_data=data
             return 1
         if(areSimilar("duck, work secretly",action)):
             query=getCmdData(action)
@@ -220,7 +227,11 @@ def show_ui():
             continue
         res=face.find_response(in_sen)
         print('response',res)
-        if((res in citidel.cmds.values()) or face.cmdDet):
+        if((res in citidel.cmds.values())):
+            send_input(res)
+##            face.cmdDet=False
+            continue
+        if(face.cmdDet):
             send_input(res)
             face.cmdDet=False
             continue
@@ -252,6 +263,10 @@ while True:
     with open('Citidel//Temp.txt','r') as f:
         action=f.read()
     action_buff=action
+##    try:
+##        execCmd(action)
+##    except Exception as e:
+##        print str(e)
     execCmd(action)
     action_buff=fetchCmd()
     action=fetchCmd()
