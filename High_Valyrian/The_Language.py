@@ -10,21 +10,28 @@ class Valyrian:
         self.__data=shelf.get('words',[])
         self.__vocab=[x.word for x in self.__data]
         shelf.close()
-        print ('Language Found')
+        print ('Language Discovered')
 
     def get_word(self, word):
-        word_data=self.run_data_lookup(word)
-        return Word(word,word_data)
-        
+        if (word not in self.__vocab):
+            word_data=self.run_data_lookup(word)
+            word=Word(word,word_data)
+            self.add_to_shelf([word])
+            return word
+        return self.__data[self.__vocab.index(word)]
 
     def add_literature(self,text):
         data=strip_search(text,self.__data)
         new_found=[self.get_word(word) if (word not in self.__vocab) else self.__data[self.__vocab.index(word)].occured() for word in data]
-        self.__data+=[x for x in new_found if x]
-        self.__vocab+=[x.word for x in new_found if x]
+        self.add_to_shelf(new_found)
+        
+    def add_to_shelf(self,column):
+        self.__data+=[x for x in column if x]
+        self.__vocab+=[x.word for x in column if x]
         shelf=shelve.open('Citidel//vocab',writeback=True)
         shelf['words']=self.__data
         shelf.close()
+
 
     def make_word_data_url(self, query,mode):
         url='http://www.dictionary.com/browse/'

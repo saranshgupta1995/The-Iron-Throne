@@ -15,7 +15,7 @@ class Word:
 
     @property
     def complexity(self):
-        return max((min((self.length*50 - self.__occurances),100),0))
+        return max((min((min((self.length,6))*50 - self.__occurances),100),0))
 
     @property
     def needed_code(self):
