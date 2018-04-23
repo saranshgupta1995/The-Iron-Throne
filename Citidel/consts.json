@@ -1,0 +1,20 @@
+{
+    "time_log_path":"Logger//Time_log.txt",
+    "cmds_path":"Citidel//cmds.txt",
+    "temp_file_path":"Citidel//temp.txt",
+    "filter_path":"Citidel//conversations_filter.json",
+    "conv_deep_path":"Citidel//conversations_deep.json",
+    "conv_in_path":"Citidel//conversations_in.json",
+    "debounce_base":0.04,
+    "debounce_mid_mul":6.5,
+    "sensitivity":35,
+    "davos_greet": "Good Ser",
+    "characters": ["tyrion","davos","mel","Varys"],
+    "my_banks": ["AX","PNB"],
+    "my_wallets": ["PTM"],
+    "headers": ["Date","Bank Name","Cr/Db Details","Cr/Db Amount","Cash Details","Cash Amount","Wallet","Transaction Details","Transaction Amount"],
+    "lf_cols": {"date":"A", "bank_name":"B", "bank_details":"C", "bank_amount":"D", "cash_details":"E", "cash_amount":"F", "wallet_name":"G", "wallet_details":"H", "wallet_amount":"I"},
+    "info_raise":"Who do you want to raise from the dead? ( Mel, Citidel, Davos, lf, Lang )",
+    "info_raise_s":"It has been done but let's not do that very often. Dead men waking up creeps me out.",
+    "info_listen_king":"I wish I could but my hearing has been impaired by my wounds."
+}

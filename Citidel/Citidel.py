@@ -3,10 +3,14 @@ pyautogui.MINIMUM_DURATION = 0
 pyautogui.MINIMUM_SLEEP = 0  # Default: 0.05
 pyautogui.PAUSE = 0
 
+## TODO shift + dir to select text bug
+
 ## Left Joystick : mouse movement
 ## Right Joystick : arrow keys
 ## L1 : Left Shift
 ## L2 : Left Ctrl
+## R1 : tab
+## R2 : alt
 ## 3 : mouse left click
 ## 4 : mouse right click
 ## Start : Enter
@@ -19,6 +23,7 @@ class Citidel:
         self.__pressed_a_t=[0,0]
         self.get_joystick()
         self.loadData()
+        print ('Citidel loaded')
 
     def get_joystick(self):
         self.useGamepad=True
@@ -32,22 +37,23 @@ class Citidel:
 
     def loadData(self):
         a=time.time()
-        self.consts = json.loads(open('Citidel//consts.txt').read())
-        self.cmds = json.loads(open('Citidel//cmds.txt').read())
-        self.stop_words=json.loads(open('Citidel//conversations_filter.json').read())['stop words']
-        self.convs_deep=json.loads(open('Citidel//conversations_deep.json').read())
+        self.info_data=''
+        self.consts = json.loads(open('Citidel//consts.json').read())
+        self.cmds = json.loads(open(self.consts['cmds_path']).read())
+        self.stop_words=json.loads(open(self.consts['filter_path']).read())['stop words']
+        self.convs_deep=json.loads(open(self.consts['conv_deep_path']).read())
         self.open_convs()
-        with open('Logger//Time_log.txt', 'a') as fp:
+        with open(self.consts['time_log_path'], 'a') as fp:
             fp.write('\nCitidel Data Time Log-'+str(time.time()-a))
 
     def getCmd(self):
-        f=open((os.path.join(os.getcwd(),'Citidel','Temp.txt')),"r")
+        f=open(self.consts['temp_file_path'],"r")
         t=f.read()
         f.close()
         return t
 
     def open_convs(self,character='tyrion',mode='in'):
-        self.convs_in=json.loads(open('Citidel//conversations_in.json').read())
+        self.convs_in=json.loads(open(self.consts['conv_in_path']).read())
         self.convs_out=json.loads(open('Citidel//'+character+'_conversations_out'+'.json').read())
 
     def close_convs(self,character='tyrion',mode='in'):
@@ -58,22 +64,24 @@ class Citidel:
         citidel.convs_in[for_data]=citidel.convs_in.get(for_data,[])+[value]
 
     def key_debounce(self,mul=1):
-        time.sleep(0.04*mul)
+        time.sleep(self.consts['debounce_base']*mul)
 
     def check_gamepad(self):
-        responsivity=35
+        responsivity=self.consts['sensitivity']
         out = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        it = 0 #iterator
+        it = 0
         pygame.event.pump()
 
-        #Read input from the two joysticks
+
         for i in range(0, self.__j.get_numaxes()):
             out[it] = self.__j.get_axis(i)
+            if(-0.8<out[it]<0.8):
+                out[it]*=0.3
             it+=1
         pyautogui.moveRel(out[0]*responsivity, out[1]*responsivity,duration=0.08)
         if(out[2]>0.9):
-            pyautogui.press('right')
-            self.key_debounce()
+           pyautogui.press('right')
+           self.key_debounce()
         if(out[3]>0.9):
             pyautogui.press('down')
             self.key_debounce()
@@ -102,7 +110,7 @@ class Citidel:
             self.__pressed_s_c[0]=0
         if(out[9]):
             pyautogui.press('tab')
-            self.key_debounce(6.5)
+            self.key_debounce(self.consts['debounce_mid_mul'])
         if(out[10]):
             if(not self.__pressed_s_c[1]):
                 pyautogui.keyDown('ctrlleft')
@@ -110,29 +118,27 @@ class Citidel:
         elif(self.__pressed_s_c[1]):
             pyautogui.keyUp('ctrlleft')
             self.__pressed_s_c[1]=0
-            
+
         if(out[11]):
             if(not self.__pressed_a_t[1]):
                 pyautogui.keyDown('alt')
-                self.__pressed_a_t[1]=1    
+                self.__pressed_a_t[1]=1
         elif(self.__pressed_a_t[1]):
             pyautogui.keyUp('alt')
             self.__pressed_a_t[1]=0
-            
+
         if(out[12]):
             pyautogui.press('backspace')
-            self.key_debounce(6.5)
+            self.key_debounce(self.consts['debounce_mid_mul'])
 
         if(out[13]):
             pyautogui.press('enter')
-            self.key_debounce(6.5)
+            self.key_debounce(self.consts['debounce_mid_mul'])
 
         if(out[6]):
             pyautogui.click(button='left')
-            self.key_debounce(6.5)
+            self.key_debounce(self.consts['debounce_mid_mul'])
         if(out[7]):
             pyautogui.click(button='right')
-            self.key_debounce(6.5)
+            self.key_debounce(self.consts['debounce_mid_mul'])
         return dire
-
-print ('Citidel loaded')
