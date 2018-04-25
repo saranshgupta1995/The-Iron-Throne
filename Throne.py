@@ -1,88 +1,19 @@
-from time import time
+from time import time, sleep
 import threading
+from random import randint
 #Imports
 #Team modules
+from Council import call_council
 
-start_time=time()
+global_l=threading.Lock()
 
-wait_Tkint=0
-def get_Tkint():
-    a=time()
-    global wait_Tkint
-    from Tkint import Tkint
-    wait_Tkint=Tkint
-    with open('Logger//Time_log.txt','a') as f:
-        f.write('\nTkint time log- '+str(time()-a))
-getting_Tkint=threading.Thread(target=get_Tkint)
-getting_Tkint.start()
-wait_Citidel=0
-def get_Citidel():
-    a=time()
-    global wait_Citidel
-    from Citidel import Citidel
-    wait_Citidel=Citidel
-    with open('Logger//Time_log.txt','a') as f:
-        f.write('\nCitidel time log- '+str(time()-a))
-getting_Citidel=threading.Thread(target=get_Citidel)
-getting_Citidel.start()
-wait_Lang=0
-def get_Lang():
-    a=time()
-    global wait_Lang
-    from High_Valyrian import The_Language
-    wait_Lang=The_Language
-    with open('Logger//Time_log.txt','a') as f:
-        f.write('\nLanguage time log- '+str(time()-a))
-getting_Lang=threading.Thread(target=get_Lang)
-getting_Lang.start()
-wait_Davos=0
-def get_Davos():
-    a=time()
-    global wait_Davos
-    from Davos import Davos
-    wait_Davos=Davos
-    with open('Logger//Time_log.txt','a') as f:
-        f.write('\nDavos time log- '+str(time()-a))
-getting_Davos=threading.Thread(target=get_Davos)
-getting_Davos.start()
-wait_Mel=0
-def get_Mel():
-    a=time()
-    global wait_Mel
-    from Mel import Mel
-    wait_Mel=Mel
-    with open('Logger//Time_log.txt','a') as f:
-        f.write('\nMel time log- '+str(time()-a))
-getting_Mel=threading.Thread(target=get_Mel)
-getting_Mel.start()
-wait_LF=0
-def get_LF():
-    a=time()
-    global wait_LF
-    from LittleFinger import LittleFinger
-    wait_LF=LittleFinger
-    with open('Logger//Time_log.txt','a') as f:
-        f.write('\nLittleFinger time log- '+str(time()-a))
-getting_LF=threading.Thread(target=get_LF)
-getting_LF.start()
+Citidel,Mel,The_Language,Tkint,Davos,LittleFinger=call_council()
 
-getting_Citidel.join()
-Citidel=wait_Citidel
 citidel=Citidel.Citidel()
-getting_Mel.join()
-Mel=wait_Mel
 mel=Mel.Mel()
-getting_Lang.join()
-The_Language=wait_Lang
 language=The_Language.Valyrian()
-getting_Tkint.join()
-Tkint=wait_Tkint
 face=Tkint.Face(citidel)
-getting_Davos.join()
-Davos=wait_Davos
 davos=Davos.Davos(citidel)
-getting_LF.join()
-LittleFinger=wait_LF
 lf=LittleFinger.LittleFinger(citidel)
 
 
@@ -91,10 +22,6 @@ from difflib import SequenceMatcher
 import pyperclip
 
 from Tkint.Utilities import send_input
-
-with open('Logger//Time_log.txt','a') as f:
-    f.write('\nTotal time log- '+str(time()-start_time)+'\n\n\n')
-
 
 print('imported everything')
 
@@ -109,6 +36,7 @@ def kill_and_raise(mod=None):
     global mel
     global lf
     global face
+    global language
     if(mod=='davos'):
         reload(Davos)
         davos= Davos.Davos(citidel)
@@ -125,21 +53,42 @@ def kill_and_raise(mod=None):
         citidel.loadData()
 if(useVarys):
     def readCmd():
-        return citidel.getCmd()
+        with open('Citidel//Temp.txt','r') as f:
+            while global_l.locked():
+                continue
+            global_l.acquire()
+            cmd=f.read()[5:]
+            global_l.release()
+        return cmd
+
+    def rawCmd():
+        while global_l.locked():
+            continue
+        global_l.acquire()
+        f=open(citidel.consts['temp_file_path'],"r")
+        t=f.read()
+        f.close()
+        global_l.release()
+        return t
+
+    def fetchCmd(cmd):
+        return citidel.cmds.get(cmd,cmd)
 
     def areSimilar(a,b):
         similar=SequenceMatcher(None, a, b).ratio()>0.8
         if(similar):
+            while global_l.locked():
+                continue
+            global_l.acquire()
             with open('Citidel//Temp.txt','w') as f:
-                f.write(b)
+                f.write(str(randint(10000,99999))+b)
+            global_l.release()
         return similar
-
-    def fetchCmd():
-        return citidel.cmds.get(readCmd(),readCmd())
 
     def getCmdData(cmd):
         face.cmdDet=True
-        while(cmd==readCmd()):
+        cmd=rawCmd()
+        while(cmd==rawCmd()):
             continue
         cmd=readCmd()
         face.cmdDet=False
@@ -148,11 +97,13 @@ if(useVarys):
     def execCmd(action):
         print ('gonna exec', action)
         if(action=='raise'):
-            citidel.info_data='Who do you want to raise from the dead? ( Mel, Citidel, Davos, lf )'
+            citidel.info_data=citidel.consts['info_raise']
             mod=getCmdData(action)
             kill_and_raise(mod)
+            citidel.info_data=citidel.consts['info_raise_s']
             return 1
         if(areSimilar("listen to the king",action)):
+            citidel.info_data=citidel.consts['info_listen_king']
             return 1
         if(areSimilar("get me these lyrics",action)):
             song=pyperclip.paste()
@@ -197,8 +148,34 @@ if(useVarys):
             word=getCmdData(action)
             print ('word lookup',word)
             word=language.get_word(word)
-            data=' '.join(word.meanings)
+            data='\n'.join(word.meanings)
             citidel.info_data=data
+            return 1
+        if(areSimilar("get word data",action)):
+            print 'enter word'
+            word=getCmdData(action)
+            print ('word lookup',word)
+            word=language.get_word(word)
+            print word.meanings
+            print word.synonyms
+            data_m='\n'.join(word.meanings)
+            data_sy='\n'.join(word.synonyms)
+            data_sn='\n'.join(word.sentences)
+            citidel.info_data='It may mean any of the following.'
+            sleep(0.1)
+            citidel.info_data=data_m
+            sleep(0.1)
+            citidel.info_data='Do you need the synonyms? Enter more for more info.'
+            need=getCmdData(word.word)
+            print need
+            if(need=='more'):
+                print(need, data_sy)
+                citidel.info_data=data_sy
+                sleep(0.1)
+                citidel.info_data='Do you need some example sentences? Enter more for more info.'
+                need=getCmdData(need)
+                if(need=='more'):
+                    citidel.info_data=data_sn
             return 1
         if(areSimilar("duck, work secretly",action)):
             query=getCmdData(action)
@@ -229,7 +206,6 @@ def show_ui():
         print('response',res)
         if((res in citidel.cmds.values())):
             send_input(res)
-##            face.cmdDet=False
             continue
         if(face.cmdDet):
             send_input(res)
@@ -252,21 +228,16 @@ if(citidel.useGamepad):
     t1=threading.Thread(target=hook_gamepad)
     t1.start()
 
-action_buff=fetchCmd()
-action=fetchCmd()
+action_buff=rawCmd()
+action=rawCmd()
 while True:
     while(action==action_buff):
         try:
-            action=fetchCmd()
+            action=rawCmd()
         except:
-            pass
-    with open('Citidel//Temp.txt','r') as f:
-        action=f.read()
-    action_buff=action
-##    try:
-##        execCmd(action)
-##    except Exception as e:
-##        print str(e)
-    execCmd(action)
-    action_buff=fetchCmd()
-    action=fetchCmd()
+            print "Exception occured in main thread"
+    cmd=readCmd()
+    cmd=fetchCmd(cmd)
+    execCmd(cmd)
+    action_buff=rawCmd()
+    action=rawCmd()
