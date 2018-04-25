@@ -4,9 +4,9 @@ class Word:
 
     def __init__(self,word, word_data):
          self.word=word
-         self.meanings=word_data.get('meanings',[])
-         self.synonyms=word_data.get('synonyms',[])
-         self.sentences=word_data.get('sentences',[])
+         self.meanings=word_data.get('meanings',[])[:3]
+         self.synonyms=word_data.get('synonyms',[])[:8]
+         self.sentences=word_data.get('sentences',[])[:3]
          self.length=len(word)
          self.__occurances=1
 
