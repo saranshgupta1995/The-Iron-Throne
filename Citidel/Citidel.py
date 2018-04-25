@@ -46,12 +46,6 @@ class Citidel:
         with open(self.consts['time_log_path'], 'a') as fp:
             fp.write('\nCitidel Data Time Log-'+str(time.time()-a))
 
-    def getCmd(self):
-        f=open(self.consts['temp_file_path'],"r")
-        t=f.read()
-        f.close()
-        return t
-
     def open_convs(self,character='tyrion',mode='in'):
         self.convs_in=json.loads(open(self.consts['conv_in_path']).read())
         self.convs_out=json.loads(open('Citidel//'+character+'_conversations_out'+'.json').read())

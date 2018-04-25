@@ -1,4 +1,5 @@
 import itertools, re
+from random import randint
 
 def breakdown(sen):
     lst=sen.split()
@@ -21,7 +22,7 @@ def breakdown(sen):
 
 def send_input(txt):
     with open('Citidel//Temp.txt','w') as f:
-        f.write(txt)
+        f.write(str(randint(10000,99999))+txt)
 
 def get_all_tags(self,text):
     text = nltk.word_tokenize(text)

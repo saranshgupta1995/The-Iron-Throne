@@ -1,17 +1,23 @@
 {
-    "how are you doing?": ["I'm fine.", "The prices of arbor gold are increasing, but I'll live", "Oh don't you worry about me. I have all the gold of casterly rock in my grasp"],
+    "how are you doing": ["I'm fine.", "The prices of arbor gold are increasing, but I'll live", "Oh don't you worry about me. I have all the gold of casterly rock in my grasp"],
+    "can you help me out":["Sure, what can I do for you?","What needs to be done."],
     "get me these lyrics": ["get me these lyrics"],
     "get me this song": ["get me this song"],
+    "get the meaning of": ["get the meaning of"],
     "listen to the king": ["listen to the king"],
     "open file or dir": ["open file or dir"],
     "open this": ["open this"],
     "duck, find me this": ["duck, find me this"],
     "duck, work secretly": ["duck, work secretly"],
     "goo, find me this": ["goo, find me this"],
-    "goo, work secretly": ["goo, work secretly"],
+    "goo work secretly": ["goo, work secretly"],
     "calculate exp": ["calculate exp"],
     "raise": ["raise"],
+    "get word data": ["get word data"],
     "ax": ["AX"],
     "ptm": ["PTM"],
-    "csh": ["CSH"]
+    "csh": ["CSH"],
+    "pnb": ["PNB"],
+    "hey": ["Hey, long time no see!!","Hi, what can I do for you?","Your Highness, to which task do I owe the pleasure?"],
+    "hey i'm rich":["Congratulations!!!"]
 }
