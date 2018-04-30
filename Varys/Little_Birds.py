@@ -1,63 +1,66 @@
 import os,pickle
-from difflib import SequenceMatcher
 import random
 
-grph={}
+class Little_Bird:
 
-drives=["F"]
+    def __init__(self):
+        self.data={}
+        self.surveyed={}
+        self.drives=['F:\\']
+        self.orig_path=os.getcwd()
+        self.filtered_folders=['node_modules','$RECYCLE.BIN']
+        self.mode='collect'
+
+    def add_data(self,parent, child):
+        if(self.mode=='collect'):
+            self.data[child]=self.data.get(child,[])+[parent]
+        elif(self.mode=='new_survey'):
+            if(parent not in self.data.get(child,[])):
+                self.surveyed[child]=self.surveyed.get(child,[])+[parent]
 
 
-bsname=os.path.basename
-orig_path=os.getcwd()
+    def get_folders(self,path):
+        return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
-def addtogrph(branch,node):
-    if node in list(grph.keys()):
-        grph[node]=grph[node]+[branch]
-    else:
-        grph[node]=[branch]
-    if(random.randint(1,1000)<6):
-        print(node,branch)
+    def get_files(self,path):
+        return [d for d in os.listdir(path) if not os.path.isdir(os.path.join(path, d))]
 
-def addtogrph2(branch,node):
-    grph[node]=grph.get(node,[])+[branch]
-
-def readfoldersin(path):
-    return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
-
-def readfilesin(path):
-    return [d for d in os.listdir(path) if not os.path.isdir(os.path.join(path, d))]
-
-def iterthrough(path):
-    os.chdir(path)
-    if(len(readfilesin(path))<1000):
-        for filee in readfilesin(path):
-            if not filee.startswith('.'):
-                addtogrph(path,filee)
-    for folder in readfoldersin(path):
-        addtogrph(path,folder)
-        newpath=path+"\\"+folder
-        if(os.path.isdir(newpath)):
+    def get_data(self,path):
+        if(len(self.get_files(path))<1000):
+            [self.add_data(path, f) for f in self.get_files(path) if not f.startswith('.')]
+        for folder in self.get_folders(path):
             if not folder.startswith('.'):
-                try:
-                    os.chdir(newpath)
-                    iterthrough(newpath)
-                except:
-                    pass
+                if not folder in self.filtered_folders:
+                    self.add_data(path, folder)
+                    new_path=os.path.join(path, folder)
+                    if(os.path.isdir(new_path)):
+                        try:
+                            self.get_data(new_path)
+                        except:
+                            print 'failed to capture data for '+folder
 
-def findpath(dest):
-    poss=[]
-    for value in grph.values():
-        try:
-            value.index(dest)
-            poss.append(list(grph.keys())[list(grph.values()).index(value)])
-        except :
-            pass
-    return poss
+    def new_survey(self):
+        self.surveyed={}
+        self.mode='new_survey'
+        x=open("datadict.p","rb")
+        self.data = pickle.load(x)
+        x.close()
+        self.fly()
+        return [value+'\\'+key for key in self.surveyed.keys() for value in self.surveyed[key]]
 
-if(not os.path.exists("datadict1.p")):
-    print("run")
-    for drive in drives:
-        drivepath=drive+":\\"
-        iterthrough(drivepath)
-        os.chdir(orig_path)
-    pickle.dump(grph,open("datadict.p","wb"))
+    @property
+    def survey_len(self):
+        return sum([len(x) for x in self.surveyed.values()])
+
+    def remember_data(self):
+        os.chdir(self.orig_path)
+        pickle.dump(self.data,open("datadict.p","wb"))
+
+    def capture_data(self):
+        self.mode='collect'
+        self.fly()
+        self.remember_data()
+
+    def fly(self):
+        for drive in self.drives:
+            self.get_data(drive)
