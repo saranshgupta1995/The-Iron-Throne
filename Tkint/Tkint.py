@@ -27,7 +27,7 @@ class Scroller:
         self.window_data=self.__data[self.__i:self.__j]
 
     def scroll_down(self):
-        will_change=(self.__j<len(self.__data)-1) and self.choice==14
+        will_change=(self.__j<len(self.__data)) and self.choice==14
         self.__i+=1*will_change
         self.__j+=1*will_change
         self.window_data=self.__data[self.__i:self.__j]
