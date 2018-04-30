@@ -10,8 +10,11 @@ wait_Davos=0
 wait_Lang=0
 wait_Mel=0
 wait_LF=0
+wait_Bran=0
 
 def call_council():
+
+    print 'calling council'
 
     start_time=time()
     def get_Tkint():
@@ -23,6 +26,15 @@ def call_council():
             f.write('\nTkint time log- '+str(time()-a))
     getting_Tkint=threading.Thread(target=get_Tkint)
     getting_Tkint.start()
+    def get_Bran():
+        a=time()
+        global wait_Bran
+        from Bran import Bran
+        wait_Bran=Bran
+        with open('Logger//Time_log.txt','a') as f:
+            f.write('\nBran time log- '+str(time()-a))
+    getting_Bran=threading.Thread(target=get_Bran)
+    getting_Bran.start()
     def get_Citidel():
         a=time()
         global wait_Citidel
@@ -69,6 +81,8 @@ def call_council():
     getting_LF=threading.Thread(target=get_LF)
     getting_LF.start()
 
+    print 'invitations sent'
+
     getting_Citidel.join()
     Citidel=wait_Citidel
     getting_Mel.join()
@@ -81,9 +95,13 @@ def call_council():
     Davos=wait_Davos
     getting_LF.join()
     LittleFinger=wait_LF
+    getting_Bran.join()
+    Bran=wait_Bran
+
+    print 'The Council has been assembled'
 
     with open('Logger//Time_log.txt','a') as f:
         f.write('\nTotal time log- '+str(time()-start_time)+'\n\n\n')
 
 
-    return Citidel,Mel,The_Language,Tkint,Davos,LittleFinger
+    return Citidel,Mel,The_Language,Tkint,Davos,LittleFinger,Bran
