@@ -181,7 +181,7 @@ def execCmd(action):
                 get_down=True
                 continue
             if(path_list_needed):
-                trgt=cmd
+                trgt=cmd.lower()
                 print 'choosing tree'
                 bran.choose_tree(trgt)
                 pathList=bran.tree.all_leaves
@@ -209,7 +209,7 @@ def execCmd(action):
                         bran.tree.climb_up(cmd[1:])
                         pathList=bran.tree.get_all_leaves()
                         path_list_needed=False
-                
+
             if(cmd[:2]=='>>'):
                 if(not cmd[2:] in bran.tree.file_leaves):
                     bran.get_inside(cmd[2:])
@@ -221,7 +221,7 @@ def execCmd(action):
                     bran.tree.move_down_branch()
                     pathList=bran.tree.get_all_leaves()
                 path_list_needed=False
-            
+
         citidel.ui_scroller=True
         citidel.ui_scroller_data=[]
 
