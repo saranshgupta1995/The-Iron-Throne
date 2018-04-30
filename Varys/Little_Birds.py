@@ -12,6 +12,8 @@ class Little_Bird:
         self.mode='collect'
 
     def add_data(self,parent, child):
+        parent=parent.lower()
+        child=child.lower()
         if(self.mode=='collect'):
             self.data[child]=self.data.get(child,[])+[parent]
         elif(self.mode=='new_survey'):

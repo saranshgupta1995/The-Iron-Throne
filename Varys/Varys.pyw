@@ -68,7 +68,7 @@ class Varys:
         if(self.__filecheck):
             if(ky > 31 and ky < 127):
                 if(not chr(ky)=="<"):
-                    self.__filename += chr(ky)
+                    self.__filename += chr(ky).lower()
                 else:
                     try:
                         self.__sub=self.__grph[self.__filename]
