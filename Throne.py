@@ -23,9 +23,6 @@ davos=Davos.Davos(citidel)
 lf=LittleFinger.LittleFinger(citidel)
 bran=Bran.Bran()
 
-## util modules
-from Tkint.Utilities import send_input
-
 print('imported everything')
 
 #Running Mode
@@ -61,12 +58,15 @@ def kill_and_raise(mod=None):
     if(mod=='citidel'):
         citidel.loadData()
 
-
-## read cmd without randkey
-def readCmd():
+def wait_for_lock():
     while global_l.locked():
         continue
     global_l.acquire()
+
+
+## read cmd without randkey
+def readCmd():
+    wait_for_lock()
     with open('Citidel//Temp.txt','r') as f:
         cmd=f.read()[5:]
     global_l.release()
@@ -74,14 +74,18 @@ def readCmd():
 
 ## read raw text from cmd file
 def rawCmd():
-    while global_l.locked():
-        continue
-    global_l.acquire()
+    wait_for_lock()
     f=open(citidel.consts['temp_file_path'],"r")
     t=f.read()
     f.close()
     global_l.release()
     return t
+
+def send_input(txt):
+    wait_for_lock()
+    with open('Citidel//Temp.txt','w') as f:
+        f.write(str(randint(10000,99999))+txt)
+    global_l.release()
 
 ## if cmd is sent via varys, fetch its meaning from citidel else return same cmd
 def fetchCmd(cmd):
