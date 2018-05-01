@@ -63,12 +63,12 @@ def kill_and_raise(mod=None):
 
 ## read cmd without randkey
 def readCmd():
+    while global_l.locked():
+        continue
+    global_l.acquire()
     with open('Citidel//Temp.txt','r') as f:
-        while global_l.locked():
-            continue
-        global_l.acquire()
         cmd=f.read()[5:]
-        global_l.release()
+    global_l.release()
     return cmd
 
 ## read raw text from cmd file
@@ -89,16 +89,7 @@ def fetchCmd(cmd):
 ## remove minor errors if present
 ## will be useful later
 def areSimilar(a,b):
-    similar=SequenceMatcher(None, a, b).ratio()>0.8
-    ## let's check if this really creates any bugs or does nothing as I recall
-    # if(similar):
-    #     while global_l.locked():
-    #         continue
-    #     global_l.acquire()
-    #     with open('Citidel//Temp.txt','w') as f:
-    #         f.write(str(randint(10000,99999))+b)
-    #     global_l.release()
-    return similar
+    return SequenceMatcher(None, a, b).ratio()>0.8
 
 ## get cmd data whenever needed
 def getCmdData(cmd):
@@ -123,18 +114,27 @@ def execCmd(action):
         citidel.info_data=citidel.consts['info_listen_king']
         return 1
     if(areSimilar("get me these lyrics",action)):
+        citidel.info_data=citidel.consts['info_gmtl']
+        sleep(0.1)
         song=pyperclip.paste()
-        print(song)
         link=mel.getYoutubeBestSearch(song+" lyrics")
-        mel.downloadAudioFrom(link)
+        download_thread=threading.Thread(target=mel.downloadAudioFrom, args=(link,))
+        download_thread.start()
+        citidel.info_data=citidel.consts['info_download_s']
+        sleep(0.1)
+        # mel.downloadAudioFrom(link)
         return 1
     if(areSimilar("get me this song",action)):
-        print ('in getting song', action)
+        citidel.info_data=citidel.consts['info_gmts']
+        sleep(0.1)
         song=getCmdData(action)
-        print(song)
         if(song):
             link=mel.getYoutubeBestSearch(song)
-            mel.downloadAudioFrom(link)
+            download_thread=threading.Thread(target=mel.downloadAudioFrom, args=(link,))
+            download_thread.start()
+            citidel.info_data=citidel.consts['info_download_s']
+            sleep(0.1)        
+##            mel.downloadAudioFrom(link)
         return 1
     if(action[0] in ('+','-')):
         print('in block 1')
