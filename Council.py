@@ -11,6 +11,7 @@ wait_Lang=0
 wait_Mel=0
 wait_LF=0
 wait_Bran=0
+wait_Luwin=0
 
 def call_council():
 
@@ -35,6 +36,15 @@ def call_council():
             f.write('\nBran time log- '+str(time()-a))
     getting_Bran=threading.Thread(target=get_Bran)
     getting_Bran.start()
+    def get_Luwin():
+        a=time()
+        global wait_Luwin
+        from Luwin import Luwin
+        wait_Luwin=Luwin
+        with open('Logger//Time_log.txt','a') as f:
+            f.write('\nLuwin time log- '+str(time()-a))
+    getting_Luwin=threading.Thread(target=get_Luwin)
+    getting_Luwin.start()
     def get_Citidel():
         a=time()
         global wait_Citidel
@@ -97,6 +107,8 @@ def call_council():
     LittleFinger=wait_LF
     getting_Bran.join()
     Bran=wait_Bran
+    getting_Luwin.join()
+    Luwin=wait_Luwin
 
     print 'The Council has been assembled'
 
@@ -104,4 +116,4 @@ def call_council():
         f.write('\nTotal time log- '+str(time()-start_time)+'\n\n\n')
 
 
-    return Citidel,Mel,The_Language,Tkint,Davos,LittleFinger,Bran
+    return Citidel,Mel,The_Language,Tkint,Davos,LittleFinger,Bran, Luwin
