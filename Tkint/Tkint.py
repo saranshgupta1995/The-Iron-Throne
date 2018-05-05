@@ -122,6 +122,7 @@ class Face:
             self.__cmd=">"+self.__textBox.get()
             self.__window.update_idletasks()
             self.__window.update()
+        self.__textBox.delete(0,'end')
         if(self.__cmd[1:-1]=='done with scroller'):
             self.exit_scroller()
         if(self.__cmd[1:-1]==''):
@@ -183,6 +184,22 @@ class Face:
         reply=choice(self.__citidel.convs_out[gist])
         return reply
 
+    def fake_typing(self):
+        a=time.time()
+        top_label=(self.__labels[0]['text'],self.__labels[0]['anchor'])
+        self.__labels[0]['anchor']="w"
+        self.__labels[0]['justify']="left"
+        wait_period=max(int(len(top_label[0])/30),0.5)
+        while(time.time()-a<wait_period):
+            time_passed=((time.time()-a)*100)/wait_period
+            to_write=int(time_passed*len(top_label[0])/100)
+            self.__labels[0]['text']=top_label[0][:to_write]
+            self.__window.update_idletasks()
+            self.__window.update()
+        self.__labels[0]['text']=top_label[0]
+        self.__labels[0]['anchor']=top_label[1]
+        self.__labels[0]['justify']=(['left','right'][top_label[1]=='e'])
+
     def find_response(self,in_sen):
         means=[]
         meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
@@ -207,14 +224,3 @@ class Face:
             means+=[in_sen]
             if(len(means)>5):
                 return 'I did not get you.'
-
-if __name__=="__main__":
-    d=Face()
-    while True:
-        res=str(d.take_Input())
-        res=d.find_response(res)
-        print(str(res))
-        d.respond_with(str(res))
-        print(str(res))
-        d.respond_with(str(res))
-    d.removeUI()
