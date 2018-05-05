@@ -95,8 +95,8 @@ class Bran:
 
 
     def get_path(self,target):
-        if(len(self.tree)):
-            return os.path.join('\\'.join(self.tree),target)
+        if(len(self.tree.tree)):
+            return os.path.join(self.tree.cwd,target)
         return os.path.join(self.show_glimpse(target)[0],target)
 
     def locate(self, target):
