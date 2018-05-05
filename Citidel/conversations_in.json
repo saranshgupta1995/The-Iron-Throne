@@ -1,5 +1,6 @@
 {
-    "tree mode": ["tree mode"],
+    "tree mode": ["tree mode", "show me my folders", "i want to browse my computer", "open my folders"],
+    "you are an awesome project": ["you are an awesome project", "i love you"],
     "ptm": ["ptm"],
     "hey i'm rich": ["hey i'm rich", "i got my salary today"],
     "ax": ["ax"],
@@ -8,17 +9,17 @@
     "listen to the king": ["listen to the king"],
     "raise": ["raise", "kill and raise"],
     "can you help me out": ["can you help me out", "can you do this for me"],
-    "hey": ["hello", "hey", "hi", "yo"],
-    "open this": ["open this"],
+    "hey": ["hello", "hey", "hi", "yo", "hi nice to meet you"],
+    "get the meaning of": ["get the meaning of", "meaning wanted", "need the meaning of"],
     "duck, work secretly": ["duck work secretly"],
     "open file or dir": ["open file or dir"],
-    "get the meaning of": ["get the meaning of", "meaning wanted", "need the meaning of"],
     "calculate exp": ["calculate exp", "solve this"],
-    "get me these lyrics": ["get me these lyrics"],
+    "get me these lyrics": ["get me these lyrics", "download song by lyrics"],
     "pnb": ["pnb"],
-    "goo, work secretly": ["goo work secretly"],
+    "open this": ["open this"],
     "csh": ["csh"],
-    "duck, find me this": ["duck find me this", "send the duck", "go duck go", "duck search me this"],
+    "duck, find me this": ["duck find me this", "send the duck", "go duck go", "duck search me this", "i need something browsed on the internet", "open ducky", "get me my duck"],
     "goo, find me this": ["goo find me this", "goo search me this"],
-    "get me this song": ["get me this song"]
+    "get me this song": ["get me this song"],
+    "goo work secretly": ["goo work secretly", "open google in incog"]
 }

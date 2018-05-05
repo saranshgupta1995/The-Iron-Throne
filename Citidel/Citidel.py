@@ -21,6 +21,8 @@ class Citidel:
     def __init__(self):
         self.__pressed_s_c=[0,0]
         self.__pressed_a_t=[0,0]
+        self.ui_scroller=False
+        self.ui_scroller_data=[]
         self.get_joystick()
         self.loadData()
         print ('Citidel loaded')
@@ -45,6 +47,7 @@ class Citidel:
         self.open_convs()
         with open(self.consts['time_log_path'], 'a') as fp:
             fp.write('\nCitidel Data Time Log-'+str(time.time()-a))
+        print 'citidel reloaded'
 
     def open_convs(self,character='tyrion',mode='in'):
         self.convs_in=json.loads(open(self.consts['conv_in_path']).read())

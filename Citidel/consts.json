@@ -16,5 +16,8 @@
     "lf_cols": {"date":"A", "bank_name":"B", "bank_details":"C", "bank_amount":"D", "cash_details":"E", "cash_amount":"F", "wallet_name":"G", "wallet_details":"H", "wallet_amount":"I"},
     "info_raise":"Who do you want to raise from the dead? ( Mel, Citidel, Davos, lf, Lang )",
     "info_raise_s":"It has been done but let's not do that very often. Dead men waking up creeps me out.",
+    "info_gmtl":"Getting lyrics from clipboard.",
+    "info_gmts":"Which song do you seek?",
+    "info_download_s":"I have sent my best men for the task. You may as well forget about it and continue with your tidings",
     "info_listen_king":"I wish I could but my hearing has been impaired by my wounds."
 }
