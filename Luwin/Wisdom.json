@@ -1,5 +1,17 @@
 {
     "meaning fetch": ["Which word is it today?","Hold on. I'm certain I have seen it in a book. Let me find it for you."],
     "ducky search": ["What do you need to know? I'm sure the DUCK will be more than happy to get it for you.","I wish you luck your grace."],
-    "money transfer": ["Where is the money coming from? I'm sure LittleFinger would want the details","Where are we sending these dragons?","LittleFinger has been informed of this transfer."]
+    "money transfer": ["Where is the money coming from? I'm sure LittleFinger would want the details","Where are we sending these dragons?","LittleFinger has been informed of this transfer."],
+    "song name download":["Which song do you seek?","Sure, I'll gather the men for the task","I have sent my best men for the task. You may as well forget about it and continue with your tidings"],
+    "song lyrics download":["Yes, I have the lyrics from your clipboard and I'll gather good men for the task","I have sent my best men for the task. You may as well forget about it and continue with your tidings"],
+    "listen to the king":["I wish I could but my hearing has been impaired by my wounds."],
+    "tree mode":["What do you need opened? Enter Folder Name to traverse, switch mode to exit."],
+    "word data":["Which word are you so curious about?","I'm sure I've seen this one before. Give me a minute"],
+    "open this":["What do you need opened? Enter Folder Name to traverse.","Let me see if I can get that for you"],
+    "duck incog":["What is it that I need to look into?","Let me see if I can get that for you"],
+    "google this":["What is it that I need to look into?","Let me see if I can get that for you"],
+    "google incog":["What is it that I need to look into?","Let me see if I can get that for you"],
+    "calculating exp":["Getting expression from clipboard"],
+    "money log":["And what was this money used for?","These change in assets, where do you think this happened?","A bird is on its way to Vale right now."],
+    "raise":["Who do you want to raise from the dead? ( Mel, Citidel, Davos, lf, Lang )","It has been done but let's not do that very often. Dead men waking up creeps me out."]
 }

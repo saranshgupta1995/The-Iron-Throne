@@ -13,9 +13,9 @@ class Luwin:
 
     def new_event(self,e):
         self.__event=e
-        self.__log=['\n'+e + " set to occur.\n"]
+        self.__log=['\n'+e + " set to occur."]
         self.say_stuff()
-        
+
     def say_stuff(self):
         self.__citidel.info_data=self.__wisdom[self.__event][len(self.__log)-1]
         sleep(0.1)
