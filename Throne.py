@@ -98,6 +98,10 @@ def areSimilar(a,b):
 
 ## get cmd data whenever needed
 def getCmdData(cmd):
+    if(len(citidel.in_cmd_data)):
+        cmd=citidel.in_cmd_data[0]
+        citidel.in_cmd_data=citidel.in_cmd_data[1:]
+        return cmd
     face.cmdDet=True
     cmd=rawCmd()
     while(cmd==rawCmd()):
@@ -132,24 +136,32 @@ def execCmd(action):
             return 1
         if(areSimilar("get me this song",action)):
             luwin.new_event('song name download')
-            song=getCmdData(action)
+            song=pyperclip.paste()
+            if('youtube.com' not in song):
+                song=getCmdData(action)
             luwin.in_event(song)
             if(song):
-                link=mel.getYoutubeBestSearch(song)
+                if('youtube.com' not in song):
+                    link=mel.getYoutubeBestSearch(song)
+                link=song
                 download_thread=threading.Thread(target=mel.downloadAudioFrom, args=(link,))
                 download_thread.start()
                 luwin.in_event(song)
                 luwin.end_event()
             return 1
         if(action[0] in ('+','-')):
+            print citidel.in_cmd_data
             luwin.new_event('money log')
             details=getCmdData(action)
+            print citidel.in_cmd_data
             luwin.in_event(action,details)
             target=getCmdData(details)
+            print citidel.in_cmd_data
             luwin.in_event(action,details, target)
             if('salary' in details.lower()):
                 lf.add_salary(action,target)
                 return 1
+            print citidel.in_cmd_data
             lf.add_log(action, target, details)
             luwin.end_event()
             return 1
@@ -236,6 +248,7 @@ def execCmd(action):
         if(areSimilar("open this",action)):
             luwin.new_event('open this')
             trgt=getCmdData(action)
+            trgt=trgt.lower()
             luwin.in_event(trgt)
             if(len(bran.show_glimpse(trgt))==1):
                 bran.get_inside(bran.get_path(trgt))
@@ -253,11 +266,13 @@ def execCmd(action):
             citidel.info_data=data_m
             sleep(0.1)
             citidel.info_data='Do you need the synonyms? Enter more for more info.'
+            sleep(0.1)
             need=getCmdData(word.word)
             if(need=='more'):
                 citidel.info_data=data_sy
                 sleep(0.1)
                 citidel.info_data='Do you need some example sentences? Enter more for more info.'
+                sleep(0.1)
                 need=getCmdData(need)
                 if(need=='more'):
                     citidel.info_data=data_sn
@@ -288,7 +303,7 @@ def execCmd(action):
         if(areSimilar("calculate exp",action)):
             luwin.new_event('calculating exp')
             pyperclip.copy(mel.calculate_this(pyperclip.paste()))
-            luwin.end_event()b
+            luwin.end_event()
             return 1
         return 0
     except Exception as e:
