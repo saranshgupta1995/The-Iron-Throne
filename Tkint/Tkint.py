@@ -123,6 +123,8 @@ class Face:
             self.__window.update_idletasks()
             self.__window.update()
         self.__textBox.delete(0,'end')
+        self.__window.update_idletasks()
+        self.__window.update()
         if(self.__cmd[1:-1]=='done with scroller'):
             self.exit_scroller()
         if(self.__cmd[1:-1]==''):
@@ -137,6 +139,7 @@ class Face:
             send_input(in_sen)
             self.cmdDet=False
             return "IS_CMD"
+        in_sen,self.__citidel.in_cmd_data=check_for_data(in_sen)
         return in_sen.lower()
 
     def add_label(self,txt):

@@ -20,6 +20,26 @@ def breakdown(sen):
 
     return solution[::-1]
 
+def check_for_data(in_sen):
+    cmd=''
+    cmd_data=[]
+    cmd_text=''
+    is_data=False
+    for i in range(len(in_sen)):
+        if(in_sen[i]=='['):
+            is_data=True
+            continue
+        elif(in_sen[i]==']'):
+            is_data=False
+            cmd_data+=[cmd_text]
+            cmd_text=''
+            continue
+        if(is_data):
+            cmd_text+=in_sen[i]
+        else:
+            cmd+=in_sen[i]
+    return ' '.join([ c for c in cmd.split() if c]), cmd_data
+
 def send_input(txt):
     with open('Citidel//Temp.txt','w') as f:
         f.write(str(randint(10000,99999))+txt)

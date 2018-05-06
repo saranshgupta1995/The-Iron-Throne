@@ -40,6 +40,7 @@ class Citidel:
     def loadData(self):
         a=time.time()
         self.info_data=''
+        self.in_cmd_data=[]
         self.consts = json.loads(open('Citidel//consts.json').read())
         self.cmds = json.loads(open(self.consts['cmds_path']).read())
         self.stop_words=json.loads(open(self.consts['filter_path']).read())['stop words']
