@@ -11,6 +11,20 @@ class Valyrian:
         self.__vocab=[x.word for x in self.__data]
         shelf.close()
         print ('Language Discovered')
+        self.clean()
+
+    def clean(self):
+        print 'before cleaning'
+        print [x.word for x in self.__data]
+        shelf=shelve.open('Citidel//vocab',writeback=True)
+        language_data=shelf.get('words',[])
+        language_data=[word for word in language_data if word.needed_code<7]
+        shelf['words']=language_data
+        self.__data=language_data
+        self.__vocab=[x.word for x in self.__data]
+        print 'after cleaning'
+        print [x.word for x in self.__data]
+        shelf.close()
 
     def get_word(self, word):
         if (word not in self.__vocab):
@@ -24,7 +38,7 @@ class Valyrian:
         data=strip_search(text,self.__data)
         new_found=[self.get_word(word) if (word not in self.__vocab) else self.__data[self.__vocab.index(word)].occured() for word in data]
         self.add_to_shelf(new_found)
-        
+
     def add_to_shelf(self,column):
         self.__data+=[x for x in column if x]
         self.__vocab+=[x.word for x in column if x]
@@ -69,4 +83,3 @@ class Valyrian:
         meanings=self.find_word_data(word)
         syns,sents=self.find_word_data(word,"thes")
         return {"meanings":meanings,"synonyms":syns,"sentences":sents}
-    
