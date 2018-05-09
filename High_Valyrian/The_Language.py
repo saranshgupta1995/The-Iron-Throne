@@ -58,17 +58,17 @@ class Valyrian:
         r = requests.get(url)
         soup = BeautifulSoup(r.content, 'html.parser')
 
-        syn=soup.select("div.relevancy-list ul li a span")
-        syn=[x.text.encode('utf-8') for x in syn]
-
         if(mode=='thes'):
-            syn=soup.select("div.relevancy-list ul li a span")
+            syn=soup.select("a.css-wf816l")
             syn=[x.text.encode('utf-8') for x in syn]
-
-            sents=(soup.select("div#example-sentences p"))
-            sents=[sen for sen in sents]
-            data=[y.text.replace('\n','').strip() for y in sents]
-            sents=[x.encode('utf-8') for x in data]
+            more_syn=soup.select("a.css-1iq9guo")
+            syn+=[x.text.encode('utf-8') for x in more_syn]
+            sents=(soup.select("div.ek2vqzh1")[1:])
+            sents=[x.text.encode('utf-8') for x in sents[0].children]
+            
+    ##        sents=[sen for sen in sents]
+    ##        data=[y.text.replace('\n','').strip() for y in sents]
+    ##        sents=[x.encode('utf-8') for x in data]
             return syn, sents
         meaning_divs= soup.find_all('div', class_="def-content")
 

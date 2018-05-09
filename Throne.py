@@ -58,7 +58,7 @@ class Throne:
             self.mel=Mel.Mel()
         if(mod=='lang'):
             reload(The_Language)
-            self.language=The_Language.Valyrian()
+            self.language=The_Language.Valyrian(self.citidel)
         if(mod=='lf'):
             reload(LittleFinger)
             self.lf=LittleFinger.LittleFinger(self.citidel)
