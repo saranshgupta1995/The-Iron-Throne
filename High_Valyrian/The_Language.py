@@ -5,8 +5,9 @@ import shelve
 
 class Valyrian:
 
-    def __init__(self):
-        shelf=shelve.open('Citidel//vocab',writeback=True)
+    def __init__(self, citidel):
+        self.__citidel=citidel
+        shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
         self.__data=shelf.get('words',[])
         self.__vocab=[x.word for x in self.__data]
         shelf.close()
@@ -14,16 +15,13 @@ class Valyrian:
         self.clean()
 
     def clean(self):
-        print 'before cleaning'
-        print [x.word for x in self.__data]
-        shelf=shelve.open('Citidel//vocab',writeback=True)
+        # TODO handle 0<needed_code<7
+        shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
         language_data=shelf.get('words',[])
         language_data=[word for word in language_data if word.needed_code<7]
         shelf['words']=language_data
         self.__data=language_data
         self.__vocab=[x.word for x in self.__data]
-        print 'after cleaning'
-        print [x.word for x in self.__data]
         shelf.close()
 
     def get_word(self, word):
@@ -42,7 +40,7 @@ class Valyrian:
     def add_to_shelf(self,column):
         self.__data+=[x for x in column if x]
         self.__vocab+=[x.word for x in column if x]
-        shelf=shelve.open('Citidel//vocab',writeback=True)
+        shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
         shelf['words']=self.__data
         shelf.close()
 

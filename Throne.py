@@ -18,7 +18,7 @@ class Throne:
         self.citidel=Citidel.Citidel()
         self.mel=Mel.Mel()
         self.luwin=Luwin.Luwin(self.citidel)
-        self.language=The_Language.Valyrian()
+        self.language=The_Language.Valyrian(self.citidel)
         self.face=Tkint.Face(self.citidel)
         self.davos=Davos.Davos(self.citidel)
         self.lf=LittleFinger.LittleFinger(self.citidel)

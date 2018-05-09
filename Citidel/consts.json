@@ -1,7 +1,8 @@
 {
     "time_log_path":"Logger//Time_log.txt",
-    "cmds_path":"Citidel//cmds.txt",
+    "cmds_path":"Citidel//cmds.json",
     "temp_file_path":"Citidel//temp.txt",
+    "vocab_path":"Citidel//vocab",
     "filter_path":"Citidel//conversations_filter.json",
     "conv_deep_path":"Citidel//conversations_deep.json",
     "conv_in_path":"Citidel//conversations_in.json",
