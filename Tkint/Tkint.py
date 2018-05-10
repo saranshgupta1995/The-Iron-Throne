@@ -67,6 +67,8 @@ class Face:
             self.add_label('')
         self.__buttons=[]
         self.__cmd=""
+        with open(r'C:\Users\Saransh\Dropbox\Temps\Throne Cmds.txt','r') as fp:
+            self.__drpbx_cmds=fp.read().split('\n')
         print ('Face loaded')
 
     def scroll_up(self):
@@ -127,6 +129,9 @@ class Face:
         self.__window.update()
         if(self.__cmd[1:-1]=='done with scroller'):
             self.exit_scroller()
+        if(self.__cmd[1:-1]=='sync pending'):
+            self.__cmd='>'+self.__drpbx_cmds[0]+'<'
+            self.__drpbx_cmds=self.__drpbx_cmds[1:]
         if(self.__cmd[1:-1]==''):
             return ''
         self.respond_with(self.__cmd[1:-1],'e')
@@ -219,6 +224,7 @@ class Face:
             meaning=find_meaning_in(in_sen,self.__citidel.convs_in,self.__citidel.convs_deep)
             if(not len(meaning)):
                 meaning=find_meaning_in(strip_search(in_sen,self.__citidel.stop_words),self.__citidel.convs_in,self.__citidel.convs_deep)
+
             if(meaning):
                 self.__citidel.convs_in[meaning]+=means
                 self.__citidel.close_convs()
