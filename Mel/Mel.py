@@ -10,7 +10,7 @@ pyautogui.PAUSE = 0
 class Mel:
 
     def __init__(self):
-        print ('Mel reloaded')
+        print ('Mel rereloaded')
 
     def getYoutubeBestSearch(self,song):
         urlopen = urllib2.urlopen  # open a url
@@ -23,8 +23,8 @@ class Mel:
         return ("https://www.youtube.com/watch?v="+search_results[0])
 
 
+
     def downloadAudioFrom(self,url):
-        print(url)
         pafy.new(url).getbestaudio(preftype="m4a").download(quiet=True)
 
     def switchApp(self,num=20):
@@ -46,11 +46,7 @@ class Mel:
 
     def calculate_this(self,exp='0'):
         ans=0
-        print('working on '+exp)
-        try:
-            ans=eval(exp)
-        except:
-            pass
+        ans=eval(exp)
         return str(ans)
 
 if(__name__=='__main__'):
