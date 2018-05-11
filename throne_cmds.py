@@ -55,7 +55,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             if('salary' in details.lower()):
                 lf.add_salary(action,target)
                 return 1
-            print citidel.in_cmd_data
             lf.add_log(action, target, details)
             luwin.end_event()
             return 1
@@ -80,7 +79,7 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             luwin.new_event('meaning fetch')
             word=getCmdData(action)
             luwin.in_event(word)
-            word=language.get_word(word)
+            word=language.get_word(word.lower())
             data='\n'.join(word.meanings)
             if(not len(data)):
                 citidel.info_data="No books in the citidel have this."
@@ -110,7 +109,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                 cmd=getCmdData(action)
                 path_list_refresh=True
                 path_list_needed=True
-                print cmd
                 if(cmd[1:] in bran.tree.file_leaves or cmd[2:] in bran.tree.file_leaves):
                     path_list_refresh=False
                     path_list_needed=False
@@ -154,7 +152,7 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             luwin.new_event('word data')
             word=getCmdData(action)
             luwin.in_event(word)
-            word=language.get_word(word)
+            word=language.get_word(word.lower())
             data_m='\n'.join(word.meanings)
             data_sy='\n'.join(word.synonyms)
             data_sn='\n'.join(word.sentences)
