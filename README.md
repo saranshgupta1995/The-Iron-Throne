@@ -1,11 +1,14 @@
 # The-Iron-Throne
 A Desktop Manager using Python
 
+### Looking for collaborators.
+
 ### Implemented
 
 * Chatbot UI for easy interaction with application
 * Hidden input logger to take specific commands even in the absence of UI
 * Ability to download mp3 from youtube by song name
+* Ability to download mp3 from youtube by youtube link
 * Ability to download mp3 from youtube by song lyrics
 * Ability to provide inputs mouse and keyboard inputs via gamepad
 * Speech to text conversion
@@ -13,6 +16,8 @@ A Desktop Manager using Python
 * Automated browsing search queries in google.com and duckduckgo.com while using Google Chrome as the browser
 * Evaluate mathematical expressions copied on clipboard
 * Integrated [PC_Crawler](https://github.com/saranshgupta1995/PC_Crawler) to open files and folders directly by keyboard inputs avoiding the use of file explorer.
+* Allow folder traversal through UI.
+* Allow word data (meanings, synonyms, sentences) fetching through UI.
 
 ### Under Development
 
@@ -26,14 +31,13 @@ A Desktop Manager using Python
 * Intergration with Whatsapp
 * Integration with Gmail
 * Expense manager
-* Language Learn and Practice Assistant
+* Practice Assistant
 * UI Custom Web Browser
 * Clipboard function declaration
 * Custom AutoComplete
 * Custom Automated Download Functionality
-* Auto-Readme generator
 
 ### Check README in modules for implemented functionalities
 ##### A Game of thrones themed Desktop Manager Program in Python
 
-Reach Out for help and queries at _saranshgupta1995@gmail.com_.
+Reach Out for help and queries at saranshgupta1995@gmail.com.
