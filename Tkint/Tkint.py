@@ -122,16 +122,18 @@ class Face:
                 self.__citidel.ui_scroller=False
                 self.exit_scroller()
             self.__cmd=">"+self.__textBox.get()
-            self.__window.update_idletasks()
-            self.__window.update()
+            self.show_screen()
         self.__textBox.delete(0,'end')
-        self.__window.update_idletasks()
-        self.__window.update()
+        self.show_screen()
         if(self.__cmd[1:-1]=='done with scroller'):
             self.exit_scroller()
         if(self.__cmd[1:-1]=='sync pending'):
+            if(not len(self.__drpbx_cmds) or (not len(self.__drpbx_cmds[0]))):
+                return 'nothing to sync but i wanna try'
             self.__cmd='>'+self.__drpbx_cmds[0]+'<'
             self.__drpbx_cmds=self.__drpbx_cmds[1:]
+            with open(r'C:\Users\Saransh\Dropbox\Temps\Throne Cmds.txt','w') as fp:
+                fp.write('\n'.join(self.__drpbx_cmds))
         if(self.__cmd[1:-1]==''):
             return ''
         self.respond_with(self.__cmd[1:-1],'e')
@@ -146,6 +148,10 @@ class Face:
             return "IS_CMD"
         in_sen,self.__citidel.in_cmd_data=check_for_data(in_sen)
         return in_sen.lower()
+
+    def show_screen(self):
+        self.__window.update_idletasks()
+        self.__window.update()
 
     def add_label(self,txt):
         self.__labels+=[Tk.Label(self.__window,text=txt,width=36,wraplength=250,font=("verdana", 9))]
@@ -202,8 +208,7 @@ class Face:
             time_passed=((time.time()-a)*100)/wait_period
             to_write=int(time_passed*len(top_label[0])/100)
             self.__labels[0]['text']=top_label[0][:to_write]
-            self.__window.update_idletasks()
-            self.__window.update()
+            self.show_screen()
         self.__labels[0]['text']=top_label[0]
         self.__labels[0]['anchor']=top_label[1]
         self.__labels[0]['justify']=(['left','right'][top_label[1]=='e'])
