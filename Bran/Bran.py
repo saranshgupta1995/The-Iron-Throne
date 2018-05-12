@@ -1,4 +1,5 @@
 import os, pickle
+import Weirwood
 
 class Tree:
 
@@ -44,11 +45,12 @@ class Bran:
 
     def __init__(self):
         self.tree=Tree()
+        self.weirwood=Weirwood.Weirwood()
         self.conflict=False
         try:
-            self.__world=pickle.load(open((os.path.join(os.getcwd(),'Varys','datadict.p')),"rb"))
+            self.__world=pickle.load(open((os.path.join(os.getcwd(),'Citidel//datadict.p')),"rb"))
         except:
-            self.__world=pickle.load(open((os.path.join(os.getcwd(),'..','Varys','datadict.p')),"rb"))
+            self.__world=pickle.load(open((os.path.join(os.getcwd(),'..','Varys','Citidel//datadict.p')),"rb"))
         print ('Bran loaded')
 
     def show_glimpse(self, target):
@@ -65,10 +67,6 @@ class Bran:
         return self.tree.tree
 
     def get_parent(self,target):
-##        if(len(self.tree)):
-##            parent = '\\'.join(self.tree)
-##            parent+='\\'*('\\' not in parent)
-##            return parent
         if('\\' in target):
             parent='\\'.join([x for x in self.get_path(target).split('\\') if x][:-1])
         else:
@@ -93,6 +91,16 @@ class Bran:
         finally:
             return data
 
+    def new_happenings(self):
+        data=self.weirwood.new_survey(self.__world)
+        return data
+
+    def register_happenings(self):
+        self.__world=self.weirwood.save_survey_data()
+
+    def register_happening(self,happening):
+        self.__world, new_found=self.weirwood.save_this_branch(happening)
+        return new_found
 
     def get_path(self,target):
         if(len(self.tree.tree)):

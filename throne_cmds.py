@@ -200,6 +200,26 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             pyperclip.copy(mel.calculate_this(pyperclip.paste()))
             luwin.end_event()
             return 1
+        if(areSimilar("survey the world",action)):
+            luwin.new_event('new survey')
+            new_found=bran.new_happenings()
+            while(len(new_found)):
+                citidel.ui_scroller_data=new_found
+                citidel.ui_scroller=True
+                cmd=getCmdData(action)
+                if(cmd=='put this on hold'):
+                    break
+                if(cmd=='let them be'):
+                    bran.register_happenings()
+                    new_found=[]
+                if(len(cmd)>1 and cmd[0]=='|' and cmd[1]!='.'):
+                    new_found=bran.register_happening(cmd[1:])
+
+            citidel.ui_scroller=True
+            citidel.ui_scroller_data=[]
+            sleep(0.2)
+            luwin.end_event()
+            return 1
         return 0
     except Exception as e:
         luwin.log_err(e)
