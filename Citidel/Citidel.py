@@ -1,4 +1,4 @@
-import json, os, shelve, threading, time, pygame, pyautogui, sys
+import json, os, shelve, threading, time, pygame, pyautogui, sys, pickle
 pyautogui.MINIMUM_DURATION = 0
 pyautogui.MINIMUM_SLEEP = 0  # Default: 0.05
 pyautogui.PAUSE = 0
@@ -42,6 +42,8 @@ class Citidel:
         self.info_data=''
         self.in_cmd_data=[]
         self.consts = json.loads(open('Citidel//consts.json').read())
+        with open('Citidel//key_timer.p', 'r') as kt:
+            self.key_timer=pickle.load(kt)
         self.cmds = json.loads(open(self.consts['cmds_path']).read())
         self.stop_words=json.loads(open(self.consts['filter_path']).read())['stop words']
         self.convs_deep=json.loads(open(self.consts['conv_deep_path']).read())

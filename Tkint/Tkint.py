@@ -203,12 +203,15 @@ class Face:
         top_label=(self.__labels[0]['text'],self.__labels[0]['anchor'])
         self.__labels[0]['anchor']="w"
         self.__labels[0]['justify']="left"
-        wait_period=max(int(len(top_label[0])/30),0.5)
-        while(time.time()-a<wait_period):
-            time_passed=((time.time()-a)*100)/wait_period
-            to_write=int(time_passed*len(top_label[0])/100)
-            self.__labels[0]['text']=top_label[0][:to_write]
-            self.show_screen()
+        written=top_label[0][0]
+        self.__labels[0]['text']=top_label[0][0]
+        while(not (written==top_label[0])):
+            a=time.time()
+            wait_period= self.__citidel.key_timer.get(top_label[0][max(len(written)-1,0):max(len(written)-1,0)+2],0.2)*0.7
+            while(time.time()-a<wait_period):
+                self.show_screen()
+            written=top_label[0][:len(written)+1]
+            self.__labels[0]['text']=top_label[0][:len(written)+1]
         self.__labels[0]['text']=top_label[0]
         self.__labels[0]['anchor']=top_label[1]
         self.__labels[0]['justify']=(['left','right'][top_label[1]=='e'])
