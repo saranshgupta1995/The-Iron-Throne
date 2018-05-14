@@ -8,7 +8,10 @@ class Word:
          self.synonyms=word_data.get('synonyms',[])[:8]
          self.sentences=word_data.get('sentences',[])[:3]
          self.length=len(word)
-         self.__occurances=1
+         self.new_memory()
+
+    def new_memory(self):
+        self.__occurances=1
 
     def occured(self):
         self.__occurances+=1

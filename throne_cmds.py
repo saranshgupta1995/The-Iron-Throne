@@ -181,6 +181,29 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             mel.get_info_on(query=query,incog=True)
             luwin.end_event()
             return 1
+        if(areSimilar("take lang test",action)):
+            luwin.new_event('new lang test')
+            test_ques= language.init_test()
+            test_ans=[]
+            score=0
+            for ques in test_ques:
+                citidel.ui_scroller_data=language.get_options(ques[1])
+                citidel.ui_scroller=True
+                citidel.header_data=ques[0]
+                cmd=getCmdData(action)
+                if(len(cmd)>1 and cmd[0]=='|' and cmd[1]!='.'):
+                    if(cmd[1:]==ques[1]):
+                        score+=1
+
+            citidel.ui_scroller=True
+            citidel.ui_scroller_data=[]
+            sleep(0.2)
+            # citidel.header_data='You Scored ' + str(score) + ' point'+('s'*(not score == 1))+'.'
+            citidel.info_data='You Scored ' + str(score) + ' point'+('s'*(not score == 1))+'.'
+            sleep(0.1)
+
+            luwin.end_event()
+            return 1
         if(areSimilar("goo, find me this",action)):
             luwin.new_event('google this')
             query=getCmdData(action)
@@ -212,6 +235,7 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                 if(cmd=='let them be'):
                     bran.register_happenings()
                     new_found=[]
+                ## TODO handle all inputs
                 if(len(cmd)>1 and cmd[0]=='|' and cmd[1]!='.'):
                     new_found=bran.register_happening(cmd[1:])
 

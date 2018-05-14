@@ -1,4 +1,4 @@
-import requests, shelve
+import requests, shelve, random
 from bs4 import BeautifulSoup
 from Elements import *
 import shelve
@@ -7,30 +7,84 @@ class Valyrian:
 
     def __init__(self, citidel):
         self.__citidel=citidel
-        shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
+        shelf=self.get_shelf()
         self.__data=shelf.get('words',[])
-        self.__vocab=[x.word for x in self.__data]
+        self.define_data()
         shelf.close()
-        print ('Language Discovered')
         self.clean()
+        print ('Language Discovered')
+
+    def get_shelf(self):
+        try:
+            shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
+        except:
+            shelf=shelve.open('vocab',writeback=True)
+        return shelf
 
     def clean(self):
         # TODO handle 0<needed_code<7
-        shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
+        shelf=self.get_shelf()
         language_data=shelf.get('words',[])
-        language_data=[word for word in language_data if word.needed_code<7]
+        language_data=[word for word in language_data if not word.needed_code%2]
         shelf['words']=language_data
         self.__data=language_data
-        self.__vocab=[x.word for x in self.__data]
+        self.define_data()
         shelf.close()
+
+    def define_data(self):
+        self.__vocab=[x.word for x in self.__data]
+        self.__lang_complexity=[x.complexity for x in self.__data]
+        self.__total_complexity=sum(self.__lang_complexity)
 
     def get_word(self, word):
         if (word not in self.__vocab):
             word_data=self.run_data_lookup(word)
             word=Word(word,word_data)
             self.add_to_shelf([word])
-            return word
-        return self.__data[self.__vocab.index(word)]
+        else:
+            word=self.__data[self.__vocab.index(word)]
+        if(not word.complexity):
+            self.is_relevent(word)
+        return word
+
+    def init_test(self):
+        self.__tested=[]
+        num_words=len([x for x in self.__lang_complexity if x])
+        for case in range(min((3, num_words))):
+            word=self.get_test_word()
+            while((word.word in [x[0] for x in self.__tested])):
+                word=self.get_test_word()
+            self.__tested+=[(word.word,random.choice(word.meanings))]
+        self.__test_wrongs=[random.choice(word.meanings) for word in self.__data if word.word not in [x[0] for x in self.__tested]]
+        return self.__tested
+
+    def get_options(self, right):
+        options=random.sample(self.__test_wrongs,3)+[right]
+        random.shuffle(options)
+        return options
+
+    def get_test_word(self):
+        rand_key=random.randint(0,self.__total_complexity)
+        i=0
+        while(rand_key>self.__lang_complexity[i]):
+            rand_key-=self.__lang_complexity[i]
+            i+=1
+        return self.__data[i]
+
+    def is_irrelevent(self, word):
+        for _ in range(301):
+            word.occured()
+        self.commit_lang_changes()
+
+    def is_relevent(self, word):
+        word.new_memory()
+        self.commit_lang_changes()
+
+    def commit_lang_changes(self):
+        shelf=self.get_shelf()
+        shelf['words']=self.__data
+        self.define_data()
+        shelf.close()
 
     def add_literature(self,text):
         data=strip_search(text,self.__data)
@@ -40,7 +94,8 @@ class Valyrian:
     def add_to_shelf(self,column):
         self.__data+=[x for x in column if x]
         self.__vocab+=[x.word for x in column if x]
-        shelf=shelve.open(self.__citidel.consts['vocab_path'],writeback=True)
+        self.__lang_complexity+=[x.complexity for x in column if x]
+        shelf=self.get_shelf()
         shelf['words']=self.__data
         shelf.close()
 
@@ -65,10 +120,6 @@ class Valyrian:
             syn+=[x.text.encode('utf-8') for x in more_syn]
             sents=(soup.select("div.ek2vqzh1")[1:])
             sents=[x.text.encode('utf-8') for x in sents[0].children]
-            
-    ##        sents=[sen for sen in sents]
-    ##        data=[y.text.replace('\n','').strip() for y in sents]
-    ##        sents=[x.encode('utf-8') for x in data]
             return syn, sents
         meaning_divs= soup.find_all('div', class_="def-content")
 
