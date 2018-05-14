@@ -12,6 +12,8 @@
     "google this":["What is it that I need to look into?","Let me see if I can get that for you"],
     "google incog":["What is it that I need to look into?","Let me see if I can get that for you"],
     "calculating exp":["Getting expression from clipboard"],
+    "new survey":["Sure, it's important that a king knows everything he can of his kingdom."],
     "money log":["And what was this money used for?","These change in assets, where do you think this happened?","A bird is on its way to Vale right now."],
+    "new lang test":["Throwing a series of questions at you. Try your best to tell us what the words mean"],
     "raise":["Who do you want to raise from the dead? ( Mel, Citidel, Davos, lf, Lang )","It has been done but let's not do that very often. Dead men waking up creeps me out."]
 }

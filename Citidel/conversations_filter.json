@@ -1,4 +1,4 @@
 {
-    "stop words": ["today","bro", "little", "very", "favourite", "please", "thanks", "hey"],
+    "stop words": ["today","bro", "little", "very", "favourite", "please", "thanks", "hi","hello", "hey", "yo"],
     "pass words": ["can","you","help","me","out"]
 }
