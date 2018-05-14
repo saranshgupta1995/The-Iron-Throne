@@ -110,6 +110,7 @@ class Throne:
             continue
         cmd=self.readCmd()
         self.face.cmdDet=False
+        self.face.empty_header()
         return cmd
 
     def show_ui(self):

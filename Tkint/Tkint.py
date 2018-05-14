@@ -57,11 +57,13 @@ class Face:
         self.__window=Tk.Tk()
         self.__window.title("The Iron Throne")
         self.__window.geometry("300x500")
-        Tk.Label(self.__window,text='',width=36,wraplength=250).pack()
+        self.__header_box=Tk.Label(self.__window,text='',width=36,wraplength=250)
+        self.__header_box.pack()
         self.__textBox=Tk.Entry(self.__window)
         self.__textBox.bind("<KeyPress>",self.key_down)
         self.__textBox.pack()
-        Tk.Label(self.__window,text='',width=36,wraplength=250).pack()
+        self.__extra_box=Tk.Label(self.__window,text='',width=36,wraplength=250)
+        self.__extra_box.pack()
         self.__labels=[]
         for i in range(15):
             self.add_label('')
@@ -107,6 +109,10 @@ class Face:
             elif(event.keycode==13):
                 self.target_found()
 
+    def empty_header(self):
+        self.__header_box['text']=''
+        print ('emptying', self.__citidel.header_data)
+
     def take_Input(self):
         self.__textBox.focus()
         self.__cmd=">"
@@ -121,6 +127,9 @@ class Face:
             if((not len(self.__citidel.ui_scroller_data)) and self.__citidel.ui_scroller):
                 self.__citidel.ui_scroller=False
                 self.exit_scroller()
+            if(len(self.__citidel.header_data)):
+                self.__header_box['text']=self.__citidel.header_data
+                self.__citidel.header_data=''
             self.__cmd=">"+self.__textBox.get()
             self.show_screen()
         self.__textBox.delete(0,'end')
@@ -223,7 +232,7 @@ class Face:
             meaning=find_meaning_in(strip_search(in_sen,self.__citidel.stop_words),self.__citidel.convs_in,self.__citidel.convs_deep)
         if(meaning):
             return self.fetch_response(meaning)
-        means+=[in_sen]
+        means+=[strip_search(in_sen,self.__citidel.stop_words)]
         while True:
             self.respond_with('What do you mean by that?')
             in_sen=self.take_Input()
@@ -238,6 +247,6 @@ class Face:
                 self.__citidel.close_convs()
                 self.__citidel.open_convs()
                 return self.fetch_response(meaning)
-            means+=[in_sen]
+            means+=[strip_search(in_sen,self.__citidel.stop_words)]
             if(len(means)>5):
                 return 'I did not get you.'

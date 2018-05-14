@@ -40,6 +40,7 @@ class Citidel:
     def loadData(self):
         a=time.time()
         self.info_data=''
+        self.header_data=''
         self.in_cmd_data=[]
         self.consts = json.loads(open('Citidel//consts.json').read())
         with open('Citidel//key_timer.p', 'r') as kt:
