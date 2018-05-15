@@ -28,13 +28,29 @@ class Valyrian:
         language_data=[word for word in language_data if not word.needed_code%2]
         shelf['words']=language_data
         self.__data=language_data
+        for i in range(10):
+            trgt=random.choice(self.__data)
+            if(trgt.needed_code>0):
+                self.refresh_word(trgt.word)
         self.define_data()
         shelf.close()
+
+    def refresh_word(self,word):
+        syns, sents = self.find_word_data(word, 'thes')
+        word=self.__data[self.__vocab.index(word)]
+        if(word.needed_code>3):
+            word.sentences=sents[:3]
+        if(word.needed_code>1):
+            word.synonyms=syns[:8]
 
     def define_data(self):
         self.__vocab=[x.word for x in self.__data]
         self.__lang_complexity=[x.complexity for x in self.__data]
         self.__total_complexity=sum(self.__lang_complexity)
+
+    def have_this_in_mind(self,word):
+        word=[x for x in self.__data if x.word==word][0]
+        self.is_irrelevent(word, 25)
 
     def get_word(self, word):
         if (word not in self.__vocab):
@@ -71,8 +87,12 @@ class Valyrian:
             i+=1
         return self.__data[i]
 
-    def is_irrelevent(self, word):
-        for _ in range(301):
+    def mark_as_irrelevent(self,word):
+        word=[x for x in self.__data if x.word==word][0]
+        self.is_irrelevent(word)
+
+    def is_irrelevent(self, word, lim=301):
+        for _ in range(lim):
             word.occured()
         self.commit_lang_changes()
 
@@ -114,9 +134,9 @@ class Valyrian:
         soup = BeautifulSoup(r.content, 'html.parser')
 
         if(mode=='thes'):
-            syn=soup.select("a.css-wf816l")
+            syn=soup.select("a.css-ebz9vl")
             syn=[x.text.encode('utf-8') for x in syn]
-            more_syn=soup.select("a.css-1iq9guo")
+            more_syn=soup.select("a.css-vdoou0")
             syn+=[x.text.encode('utf-8') for x in more_syn]
             sents=(soup.select("div.ek2vqzh1")[1:])
             sents=[x.text.encode('utf-8') for x in sents[0].children]
