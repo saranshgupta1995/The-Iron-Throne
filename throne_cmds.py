@@ -194,6 +194,9 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                 if(len(cmd)>1 and cmd[0]=='|' and cmd[1]!='.'):
                     if(cmd[1:]==ques[1]):
                         score+=1
+                        language.have_this_in_mind(ques[0])
+                if(cmd[1:3]=='..'):
+                    language.mark_as_irrelevent(ques[0])
 
             citidel.ui_scroller=True
             citidel.ui_scroller_data=[]
