@@ -185,6 +185,7 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             luwin.new_event('new lang test')
             test_ques= language.init_test()
             test_ans=[]
+            wronged=[]
             score=0
             for ques in test_ques:
                 citidel.ui_scroller_data=language.get_options(ques[1])
@@ -195,6 +196,8 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                     if(cmd[1:]==ques[1]):
                         score+=1
                         language.have_this_in_mind(ques[0])
+                    else:
+                        wronged+=[ques]
                 if(cmd[1:3]=='..'):
                     language.mark_as_irrelevent(ques[0])
 
@@ -204,6 +207,10 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             # citidel.header_data='You Scored ' + str(score) + ' point'+('s'*(not score == 1))+'.'
             citidel.info_data='You Scored ' + str(score) + ' point'+('s'*(not score == 1))+'.'
             sleep(0.1)
+            for word in wronged:
+                citidel.info_data='The word ' + word[0] + ' means '+word[1]
+                sleep(0.1)
+
 
             luwin.end_event()
             return 1

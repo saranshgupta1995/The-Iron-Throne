@@ -1,13 +1,30 @@
+from time import time
+
+a=time()
+
 import threading, os
 
 ## only used for randkey
 from random import randint
 
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nBasic Import 1 time log- '+str(time()-a))
+
+a=time()
 ## used to call council modules
 from Council import call_council
 
 from throne_cmds import execCmd
+
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nBasic Import 2 time log- '+str(time()-a))
+
+a=time()
+
 Citidel, Mel, The_Language, Tkint, Davos, LittleFinger, Bran, Luwin = call_council()
+
+with open('Logger//Time_log.txt','a') as f:
+    f.write('\nCouncil Call time log- '+str(time()-a))
 
 global_l=threading.Lock()
 
@@ -15,6 +32,7 @@ class Throne:
 
     def __init__(self):
         ## all loaded modules
+        a=time()
         self.citidel=Citidel.Citidel()
         self.mel=Mel.Mel()
         self.luwin=Luwin.Luwin(self.citidel)
@@ -23,6 +41,8 @@ class Throne:
         self.davos=Davos.Davos(self.citidel)
         self.lf=LittleFinger.LittleFinger(self.citidel)
         self.bran=Bran.Bran()
+        with open('Logger//Time_log.txt','a') as f:
+            f.write('\nObject Creation time log- '+str(time()-a))
         print('imported everything')
         t=threading.Thread(target=self.show_ui)
         t.start()
