@@ -111,7 +111,6 @@ class Face:
 
     def empty_header(self):
         self.__header_box['text']=''
-        print ('emptying', self.__citidel.header_data)
 
     def take_Input(self):
         self.__textBox.focus()
@@ -197,9 +196,10 @@ class Face:
         for i in range(min([len(data),15]),0,-1):
             self.respond_with(data[i-1])
 
+
     def exit_scroller(self):
         self.__scroller=None
-        for i in range(15):
+        for i in range(14,-1,-1):
             self.respond_with(self.__temp_labels[i][0],self.__temp_labels[i][1])
             self.__labels[i]['bg']='SystemButtonFace'
 
