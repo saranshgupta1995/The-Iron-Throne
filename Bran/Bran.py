@@ -58,38 +58,19 @@ class Bran:
 
     def choose_tree(self, target):
         if(len(self.show_glimpse(target))==1):
+            if(self.show_glimpse(target)[0]=='location missing'):
+                self.tree.tree=['F:']
+                return
             self.tree.tree=[branch for branch in self.show_glimpse(target)[0].split('\\') if branch]+[target]
         else:
             self.conflict=True
             self.tree.all_leaves=[os.path.join(x,target) for x in self.show_glimpse(target)]
-
-    def get_all_parents(self, target):
-        return self.tree.tree
-
-    def get_parent(self,target):
-        if('\\' in target):
-            parent='\\'.join([x for x in self.get_path(target).split('\\') if x][:-1])
-        else:
-            parent = '\\'.join(self.get_all_parents(target))
-        parent+='\\'*('\\' not in parent)
-        return parent
-
-    def previous_folder(self, target):
-        return self.get_parent(target)
 
     def readfoldersin(self, path):
         return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
     def readfilesin(self, path):
         return [d for d in os.listdir(path) if not os.path.isdir(os.path.join(path, d))]
-
-    def readPath(self, path):
-        try:
-            data = [d for d in os.listdir(path)]
-        except:
-            data=[]
-        finally:
-            return data
 
     def new_happenings(self):
         data=self.weirwood.new_survey(self.__world)
@@ -106,24 +87,6 @@ class Bran:
         if(len(self.tree.tree)):
             return os.path.join(self.tree.cwd,target)
         return os.path.join(self.show_glimpse(target)[0],target)
-
-    def locate(self, target):
-        if(len(self.show_glimpse(target))==1):
-            return self.readPath(self.show_glimpse(target)[0])
-        else:
-            return self.show_glimpse(target)
-
-    def peek_inside(self, target):
-        if(len(self.tree.tree)):
-            data=self.readPath(os.path.join('\\'.join(self.tree.tree),target))
-            return data
-        if(len(self.show_glimpse(target))==1):
-            data= self.readPath(self.get_path(target))
-        else:
-            data= self.show_glimpse(target)
-            data=[x+'\\'+target for x in data]
-            data=['\\'.join([y for y in x.split('\\') if y]) for x in data]
-        return data
 
     def get_inside(self,target):
         target=os.path.join(self.tree.cwd,target)

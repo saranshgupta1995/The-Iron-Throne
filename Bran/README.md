@@ -1,6 +1,7 @@
 ## Bran
 
-#### Here's a list of features of this module
+#### Here's a list of features of this module :
+
 * Used to virtually traverse through your directories from the project.
 * Also informs of new files that have been added since last check.
 * Allows user to open any directory by folder name.
