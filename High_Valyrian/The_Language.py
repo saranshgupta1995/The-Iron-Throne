@@ -22,7 +22,6 @@ class Valyrian:
         return shelf
 
     def clean(self):
-        # TODO handle 0<needed_code<7
         shelf=self.get_shelf()
         language_data=shelf.get('words',[])
         language_data=[word for word in language_data if not word.needed_code%2]
@@ -31,7 +30,10 @@ class Valyrian:
         for i in range(10):
             trgt=random.choice(self.__data)
             if(trgt.needed_code>0):
-                self.refresh_word(trgt.word)
+                try:
+                    self.refresh_word(trgt.word)
+                except:
+                    pass
         self.define_data()
         shelf.close()
 
@@ -46,7 +48,6 @@ class Valyrian:
     def define_data(self):
         self.__vocab=[x.word for x in self.__data]
         self.__lang_complexity=[x.complexity for x in self.__data]
-        self.__total_complexity=sum(self.__lang_complexity)
 
     def have_this_in_mind(self,word):
         word=[x for x in self.__data if x.word==word][0]
@@ -66,7 +67,7 @@ class Valyrian:
     def init_test(self):
         self.__tested=[]
         num_words=len([x for x in self.__lang_complexity if x])
-        for case in range(min((3, num_words))):
+        for case in range(min((5, num_words))):
             word=self.get_test_word()
             while((word.word in [x[0] for x in self.__tested])):
                 word=self.get_test_word()
@@ -80,8 +81,7 @@ class Valyrian:
         return options
 
     def get_test_word(self):
-        rand_key=random.randint(0,self.__total_complexity)
-        i=0
+        rand_key,i=random.randint(0,sum(self.__lang_complexity)),0
         while(rand_key>self.__lang_complexity[i]):
             rand_key-=self.__lang_complexity[i]
             i+=1
@@ -129,26 +129,21 @@ class Valyrian:
 
     def find_word_data(self, word,mode="dict"):
         url = self.make_word_data_url(word, mode)
-
         r = requests.get(url)
         soup = BeautifulSoup(r.content, 'html.parser')
 
         if(mode=='thes'):
-            syn=soup.select("a.css-ebz9vl")
+            syn=soup.select("a.css-ebz9vl")+soup.select("a.css-vdoou0")
             syn=[x.text.encode('utf-8') for x in syn]
-            more_syn=soup.select("a.css-vdoou0")
-            syn+=[x.text.encode('utf-8') for x in more_syn]
             sents=(soup.select("div.ek2vqzh1")[1:])
             sents=[x.text.encode('utf-8') for x in sents[0].children]
             return syn, sents
-        meaning_divs= soup.find_all('div', class_="def-content")
 
+        meaning_divs= soup.find_all('div', class_="def-content")
         meanings=[x.text.encode('utf-8') for x in meaning_divs]
         meanings=[x.replace('\n','').replace('\r','').strip() for x in meanings]
-
         return meanings
 
     def run_data_lookup(self,word):
-        meanings=self.find_word_data(word)
         syns,sents=self.find_word_data(word,"thes")
-        return {"meanings":meanings,"synonyms":syns,"sentences":sents}
+        return {"meanings":self.find_word_data(word),"synonyms":syns,"sentences":sents}
