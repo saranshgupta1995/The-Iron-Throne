@@ -73,8 +73,8 @@ def call_council():
     getting_Davos=threading.Thread(target=get_Davos)
     getting_Davos.start()
     def get_Mel():
-        a=time()
         global wait_Mel
+        a=time()
         from Mel import Mel
         wait_Mel=Mel
         with open('Logger//Time_log.txt','a') as f:
@@ -94,21 +94,13 @@ def call_council():
     print 'invitations sent'
 
     getting_Citidel.join()
-    Citidel=wait_Citidel
     getting_Mel.join()
-    Mel=wait_Mel
     getting_Lang.join()
-    The_Language=wait_Lang
     getting_Tkint.join()
-    Tkint=wait_Tkint
     getting_Davos.join()
-    Davos=wait_Davos
     getting_LF.join()
-    LittleFinger=wait_LF
     getting_Bran.join()
-    Bran=wait_Bran
     getting_Luwin.join()
-    Luwin=wait_Luwin
 
     print 'The Council has been assembled'
 
@@ -116,4 +108,4 @@ def call_council():
         f.write('\nTotal time log- '+str(time()-start_time)+'\n\n\n')
 
 
-    return Citidel,Mel,The_Language,Tkint,Davos,LittleFinger,Bran, Luwin
+    return wait_Citidel,wait_Mel,wait_Lang,wait_Tkint,wait_Davos,wait_LF,wait_Bran, wait_Luwin
