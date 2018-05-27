@@ -6,6 +6,8 @@ from datetime import datetime as dt
 class Luwin:
 
     def __init__(self, citidel):
+        with open('Luwin_Log.txt','w') as f:
+            f.write('launched new session.')
         self.__log=[]
         self.__citidel=citidel
         self.__event=''
@@ -25,7 +27,7 @@ class Luwin:
         self.say_stuff()
 
     def end_event(self):
-        self.__citidel.info_data='Winter is coming your grace. Time is a matter o concern, now, more than ever.'
+        self.__citidel.info_data='Winter is coming your grace. Time is a matter of concern, now, more than ever.'
         with open('Luwin_Log.txt','a') as f:
             f.write('\n'.join(self.__log)+'\n'+self.__event+' successfully completed\n')
         sleep(0.1)
