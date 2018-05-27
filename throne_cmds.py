@@ -15,12 +15,8 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             mod=getCmdData(action)
             luwin.in_event('raise',mod)
             kill_and_raise(mod)
-            luwin.end_event()
-            return 1
         if(areSimilar("listen to the king",action)):
             luwin.new_event('listen to the king')
-            luwin.end_event()
-            return 1
         if(areSimilar("get me these lyrics",action)):
             luwin.new_event('song lyrics download')
             song=pyperclip.paste()
@@ -28,8 +24,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             luwin.in_event(song)
             download_thread=threading.Thread(target=mel.downloadAudioFrom, args=(link,))
             download_thread.start()
-            luwin.end_event()
-            return 1
         if(areSimilar("get me this song",action)):
             luwin.new_event('song name download')
             song=pyperclip.paste()
@@ -44,8 +38,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                 download_thread=threading.Thread(target=mel.downloadAudioFrom, args=(link,))
                 download_thread.start()
                 luwin.in_event(song)
-                luwin.end_event()
-            return 1
         if(action[0] in ('+','-')):
             luwin.new_event('money log')
             details=getCmdData(action)
@@ -54,10 +46,7 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             luwin.in_event(action,details, target)
             if('salary' in details.lower()):
                 lf.add_salary(action,target)
-                return 1
             lf.add_log(action, target, details)
-            luwin.end_event()
-            return 1
         elif(action[0] == '$'):
             luwin.new_event('money transfer')
             action=action[1:]
@@ -66,15 +55,11 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             trgt=getCmdData(src)
             luwin.in_event(action, src, trgt)
             lf.do_transfer(action,src,trgt)
-            luwin.end_event()
-            return 1
         if(areSimilar("duck, find me this",action)):
             luwin.new_event('ducky search')
             query=getCmdData(action)
             luwin.in_event(query)
             mel.get_info_on(query=query)
-            luwin.end_event()
-            return 1
         if(areSimilar("get the meaning of",action)):
             luwin.new_event('meaning fetch')
             word=getCmdData(action)
@@ -87,8 +72,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                 return 1
             citidel.info_data=data
             sleep(0.1)
-            luwin.end_event()
-            return 1
         if(areSimilar("tree mode",action)):
             luwin.new_event("tree mode")
             cmd=getCmdData(action)
@@ -124,7 +107,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                             bran.tree.climb_up(cmd[1:])
                             pathList=bran.tree.get_all_leaves()
                             path_list_needed=False
-
                 if(cmd[:2]=='>>'):
                     if(not cmd[2:] in bran.tree.file_leaves):
                         bran.get_inside(cmd[2:])
@@ -138,16 +120,12 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             citidel.ui_scroller=True
             citidel.ui_scroller_data=[]
             sleep(0.2)
-            luwin.end_event()
-
         if(areSimilar("open this",action)):
             luwin.new_event('open this')
-            trgt=getCmdData(action)
-            trgt=trgt.lower()
+            trgt=getCmdData(action).lower()
             luwin.in_event(trgt)
             if(len(bran.show_glimpse(trgt))==1):
                 bran.get_inside(bran.get_path(trgt))
-            luwin.end_event()
         if(areSimilar("get word data",action)):
             luwin.new_event('word data')
             word=getCmdData(action)
@@ -172,15 +150,11 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                 if(need=='more'):
                     citidel.info_data=data_sn
                     sleep(0.1)
-            luwin.end_event()
-            return 1
         if(areSimilar("duck, work secretly",action)):
             luwin.new_event('duck incog')
             query=getCmdData(action)
             luwin.in_event(query)
             mel.get_info_on(query=query,incog=True)
-            luwin.end_event()
-            return 1
         if(areSimilar("take lang test",action)):
             luwin.new_event('new lang test')
             test_ques= language.init_test()
@@ -200,7 +174,6 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
                         wronged+=[ques]
                 if(cmd[1:3]=='..'):
                     language.mark_as_irrelevent(ques[0])
-
             citidel.ui_scroller=True
             citidel.ui_scroller_data=[]
             sleep(0.2)
@@ -210,29 +183,19 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             for word in wronged:
                 citidel.info_data='The word ' + word[0] + ' means '+word[1]
                 sleep(0.1)
-
-
-            luwin.end_event()
-            return 1
         if(areSimilar("goo, find me this",action)):
             luwin.new_event('google this')
             query=getCmdData(action)
             luwin.in_event(query)
             mel.get_info_on(query=query,goo=True)
-            luwin.end_event()
-            return 1
         if(areSimilar("goo work secretly",action)):
             luwin.new_event('google incog')
             query=getCmdData(action)
             luwin.in_event(query)
             mel.get_info_on(query=query,goo=True,incog=True)
-            luwin.end_event()
-            return 1
         if(areSimilar("calculate exp",action)):
             luwin.new_event('calculating exp')
             pyperclip.copy(mel.calculate_this(pyperclip.paste()))
-            luwin.end_event()
-            return 1
         if(areSimilar("survey the world",action)):
             luwin.new_event('new survey')
             new_found=bran.new_happenings()
@@ -252,9 +215,7 @@ def execCmd(citidel, mel, language, face, davos, lf, bran, luwin, action, getCmd
             citidel.ui_scroller=True
             citidel.ui_scroller_data=[]
             sleep(0.2)
-            luwin.end_event()
-            return 1
-        return 0
+        luwin.end_event()
     except Exception as e:
         luwin.log_err(e)
         sleep(0.1)
