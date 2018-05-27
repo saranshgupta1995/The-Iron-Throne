@@ -4,6 +4,8 @@ from time import time
 import threading
 from random import randint
 
+print('calling varys')
+
 class Varys:
 
     def __init__(self):
@@ -135,5 +137,4 @@ class Varys:
 
         return True
 
-if __name__ == "__main__":
-    v=Varys()
+v=Varys()
