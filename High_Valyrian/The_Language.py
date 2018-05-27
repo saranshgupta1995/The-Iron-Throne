@@ -27,7 +27,7 @@ class Valyrian:
         language_data=[word for word in language_data if not word.needed_code%2]
         shelf['words']=language_data
         self.__data=language_data
-        for i in range(10):
+        for i in range(100):
             trgt=random.choice(self.__data)
             if(trgt.needed_code>0):
                 try:
@@ -121,15 +121,13 @@ class Valyrian:
 
 
     def make_word_data_url(self, query,mode):
-        url='http://www.dictionary.com/browse/'
+        url='http://www.dictionary.com/browse/'+query.strip().lower().replace(' ', '%20')
         if(mode=='thes'):
-            url=url.replace('dictionary','thesaurus')
-        url += query.strip().lower().replace(' ', '%20')
+            return url.replace('dictionary','thesaurus')
         return url
 
     def find_word_data(self, word,mode="dict"):
-        url = self.make_word_data_url(word, mode)
-        r = requests.get(url)
+        r = requests.get(self.make_word_data_url(word, mode))
         soup = BeautifulSoup(r.content, 'html.parser')
 
         if(mode=='thes'):
@@ -139,11 +137,14 @@ class Valyrian:
             sents=[x.text.encode('utf-8') for x in sents[0].children]
             return syn, sents
 
-        meaning_divs= soup.find_all('div', class_="def-content")
+        meaning_divs= soup.select("span.e10vl5dg6")
         meanings=[x.text.encode('utf-8') for x in meaning_divs]
         meanings=[x.replace('\n','').replace('\r','').strip() for x in meanings]
         return meanings
 
     def run_data_lookup(self,word):
-        syns,sents=self.find_word_data(word,"thes")
+        try:
+            syns,sents=self.find_word_data(word,"thes")
+        except:
+            syns,sents=[],[]
         return {"meanings":self.find_word_data(word),"synonyms":syns,"sentences":sents}
