@@ -27,13 +27,14 @@ class Valyrian:
         language_data=[word for word in language_data if not word.needed_code%2]
         shelf['words']=language_data
         self.__data=language_data
-        for i in range(100):
-            trgt=random.choice(self.__data)
-            if(trgt.needed_code>0):
-                try:
-                    self.refresh_word(trgt.word)
-                except:
-                    pass
+        if(len(self.__data)):
+            for i in range(100):
+                trgt=random.choice(self.__data)
+                if(trgt.needed_code>0):
+                    try:
+                        self.refresh_word(trgt.word)
+                    except:
+                        pass
         self.define_data()
         shelf.close()
 
