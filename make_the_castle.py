@@ -10,4 +10,4 @@ except:
 
 pickle.dump({},open('Citidel//pika.p','wb'))
 
-Weirwood().capture_data()
+Weirwood.Weirwood().capture_data()
