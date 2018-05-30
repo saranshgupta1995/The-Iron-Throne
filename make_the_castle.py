@@ -2,7 +2,11 @@ import os, pickle
 from Bran import Weirwood
 
 ## Make Logger Folder
-os.mkdir('Logger')
+try:
+    os.mkdir('Logger')
+except:
+    pass
+
 
 pickle.dump({},open('Citidel//pika.p','wb'))
 
