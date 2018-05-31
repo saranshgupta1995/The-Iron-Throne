@@ -9,13 +9,15 @@ pip install pywinauto
 pip install pyttsx
 pip install SpeechRecognition
 pip install requests
-pip install BeautifulSoup
+pip install beautifulsoup4
 pip install openpyxl
 pip install pyperclip
 pip install pafy
+pip install youtube-dl
 pip install nltk
 pip install pyHook
 pip install logging
+pip install threading
 
 f:
 
