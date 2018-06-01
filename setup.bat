@@ -1,24 +1,9 @@
-c:
+python -m pip install requirements.txt
 
-cd Python27
-cd Scripts
+cd Module
 
-pip install pygame
-pip install pyautogui
-pip install pywinauto
-pip install pyttsx
-pip install SpeechRecognition
-pip install requests
-pip install beautifulsoup4
-pip install openpyxl
-pip install pyperclip
-pip install pafy
-pip install youtube-dl
-pip install nltk
-pip install pyHook
-pip install logging
-pip install threading
+python -m pip install pyHook-1.5.1-cp27-cp27m-win_amd64.whl
 
-f:
+cd ..
 
 START make_the_castle.py

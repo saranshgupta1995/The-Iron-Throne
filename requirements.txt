@@ -1,13 +1,10 @@
-BeautifulSoup==3.2.1
 beautifulsoup4==4.6.0
-bs4==0.0.1
 certifi==2018.4.16
 chardet==3.0.4
 comtypes==1.1.4
 et-xmlfile==1.0.1
 idna==2.6
 jdcal==1.4
-logging==0.4.9.6
 nltk==3.3
 openpyxl==2.5.3
 pafy==0.5.4
