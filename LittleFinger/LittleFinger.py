@@ -70,7 +70,7 @@ class LittleFinger:
 
     def read_drpbx_logs(self):
         left_over=''
-        with open(r'C:\Users\Saransh\Dropbox\Temps\Expenses.txt') as f:
+        with open(self.__citidel.consts['drpbx_exps_file']) as f:
             next_is_date=False
             for line in f:
                 ## TODO Currently all file logs are pushed pushed to current data
@@ -94,7 +94,7 @@ class LittleFinger:
                     self.do_transfer(am,src,trgt)
                     continue
                 left_over+=line
-            with open(r'C:\Users\Saransh\Dropbox\Temps\Expenses.txt', 'w') as fp:
+            with open(self.__citidel.consts['drpbx_exps_file'], 'w') as fp:
                 fp.write(left_over)
 
     def add_salary(self,amount, target):

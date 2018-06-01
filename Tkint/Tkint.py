@@ -69,7 +69,7 @@ class Face:
             self.add_label('')
         self.__buttons=[]
         self.__cmd=""
-        with open(r'C:\Users\Saransh\Dropbox\Temps\Throne Cmds.txt','r') as fp:
+        with open(self.__citidel.consts['drpbx_cmds_file'],'r') as fp:
             self.__drpbx_cmds=fp.read().split('\n')
         print ('Face loaded')
 
@@ -140,7 +140,7 @@ class Face:
                 return 'nothing to sync but i wanna try'
             self.__cmd='>'+self.__drpbx_cmds[0]+'<'
             self.__drpbx_cmds=self.__drpbx_cmds[1:]
-            with open(r'C:\Users\Saransh\Dropbox\Temps\Throne Cmds.txt','w') as fp:
+            with open(self.__citidel.consts['drpbx_cmds_file'],'w') as fp:
                 fp.write('\n'.join(self.__drpbx_cmds))
         if(self.__cmd[1:-1]==''):
             return ''

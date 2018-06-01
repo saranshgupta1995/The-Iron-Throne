@@ -8,11 +8,13 @@ except:
     pass
 
 
-# pickle.dump({},open('Citidel//vocab','wb'))
 drpx_need=False
 consts=json.loads(open('Citidel//consts.json').read())
 if(not drpx_need):
-    pass
+    consts['drpbx_cmds_file']="Citidel//waste.txt"
+    consts['drpbx_exps_file']="Citidel//waste.txt"
+    with open('Citidel//consts.json', 'w') as fp:
+        json.dump(consts, fp)
 
 w=Weirwood.Weirwood()
 

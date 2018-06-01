@@ -2,6 +2,8 @@
     "time_log_path":"Logger//Time_log.txt",
     "cmds_path":"Citidel//cmds.json",
     "temp_file_path":"Citidel//temp.txt",
+    "drpbx_cmds_file":"C://Users//Saransh//Dropbox//Temps//Throne Cmds.txt",
+    "drpbx_exps_file":"C://Users//Saransh//Dropbox//Temps//Expenses.txt",
     "vocab_path":"Citidel//vocab",
     "filter_path":"Citidel//conversations_filter.json",
     "conv_deep_path":"Citidel//conversations_deep.json",
