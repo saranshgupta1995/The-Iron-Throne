@@ -1,4 +1,4 @@
-import os, pickle
+import os, pickle, json
 from Bran import Weirwood
 
 ## Make Logger Folder
@@ -9,8 +9,10 @@ except:
 
 
 # pickle.dump({},open('Citidel//vocab','wb'))
-
-
+drpx_need=False
+consts=json.loads(open('Citidel//consts.json').read())
+if(not drpx_need):
+    pass
 
 w=Weirwood.Weirwood()
 

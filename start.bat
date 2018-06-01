@@ -1,4 +1,4 @@
-echo off
-START Throne.pyw
+
+START Throne.py
 cd Varys
 START Varys.pyw
