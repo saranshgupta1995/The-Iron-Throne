@@ -18,6 +18,6 @@ if(not drpx_need):
 
 w=Weirwood.Weirwood()
 
-w.drives=[x+':\\' for x in input("Which drives do you want monitor? Enter you commonly used drives and avoid drives with too many software installation. Eg - to monitor drives D, E,F , enter 'D E F' ").split()]
+w.drives=[x+':\\' for x in raw_input("Which drives do you want monitor? Enter you commonly used drives and avoid drives with too many software installation. Eg - to monitor drives D, E,F , enter 'D E F' ").split()]
 
 w.capture_data()
