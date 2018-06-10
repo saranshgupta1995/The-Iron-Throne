@@ -4,10 +4,10 @@ import speech_recognition as sr
 class Davos:
 
     def __init__(self,citidel):
-        self.__engine = pyttsx.init()
-        self.__r = sr.Recognizer()
-        self.__citidel=citidel
-        
+        # self.__engine = pyttsx.init()
+        # self.__r = sr.Recognizer()
+        # self.__citidel=citidel
+
     def say_this(self,sentence):
         self.__engine.say(sentence)
         self.__engine.runAndWait()
