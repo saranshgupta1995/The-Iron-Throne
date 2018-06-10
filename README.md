@@ -6,8 +6,7 @@ A Desktop Manager using Python
 ### To install
 
 * Run setup.bat. This will install all required dependencies. *Uses pip. Python Path should be set*
-* Once setup.bat has been executed, run make_the_castle.py.
-* Start with start.bat
+* Run the project with start.bat *Varys can be skipped. You may run Throne.py only*
 
 ### Implemented
 
