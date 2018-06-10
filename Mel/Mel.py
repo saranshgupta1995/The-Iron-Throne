@@ -39,7 +39,7 @@ class Mel:
         query=query.replace(' ','+')
         query=se+query
         app = pywinauto.Application(backend='uia')
-        chrome_path=r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+        chrome_path=r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe' if os.path.exists(r'C:\Program Files (x86)\Google\Chrome') else r'C:\Program Files\Google'
         app.start(chrome_path + ' --force-renderer-accessibility '+('--incognito '*incog)+'--start-maximized '+query)
 
 

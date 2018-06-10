@@ -7,6 +7,7 @@ class Davos:
         # self.__engine = pyttsx.init()
         # self.__r = sr.Recognizer()
         # self.__citidel=citidel
+        pass
 
     def say_this(self,sentence):
         self.__engine.say(sentence)
