@@ -1,7 +1,13 @@
 # The-Iron-Throne
 A Desktop Manager using Python
 
-#### Looking for collaborators.
+#### Looking for contributors.
+
+### To install
+
+* Run setup.bat. This will install all required dependencies. *Uses pip. Python Path should be set*
+* Once setup.bat has been executed, run make_the_castle.py.
+* Start with start.bat
 
 ### Implemented
 
@@ -32,6 +38,7 @@ A Desktop Manager using Python
 * Integration with Gmail
 * UI Custom Web Browser
 * Clipboard function declaration
+* Server to maintain data
 * Lots of Bug fixes
 * UX Changes
 * Better error handling
